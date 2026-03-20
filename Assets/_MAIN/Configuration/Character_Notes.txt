@@ -1,0 +1,5 @@
+
+
+1.ID must be EQUALS to the sprite NAME
+
+2.All of the sprite NAME (of each charactes, ex: outfit, hair, emotion,..) MUST be UNIQE or it will mess up the History State!

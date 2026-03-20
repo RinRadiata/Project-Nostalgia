@@ -1,0 +1,9 @@
+SetLayerMedia(background EngineRoom), PlaySong(Calm2)
+Nerine.Show(), Neri.Show(), Nerine.SetPosition(-0.5), Neri.Animate(FaceLeft), Neri.SetPosition(-0.5)
+Nerine.Move(0.2 -spd 1.5), Neri.Move(0.5 -spd 1.5)
+wait(1)
+
+ShowDB(-i true)
+Nerine "...{wa 1}Maybe you do saw something..."
+Neri "That's what i'm trying too tell you!"
+

@@ -1,0 +1,36 @@
+PlayAmbience(DragonVeinPiano -v 0.1), wait(1)
+
+enter Nerine as ??? "So...did we have ever met before?"
+
+choice "The choice is yours!"
+{
+	-Tell her about our past encounters
+		<mainChar> "Yes, we have met before...{wa 1}thats...{wa 1}along time ago..."
+		Nerine as ??? "...{wa 1}You look familier to me..{wa 1}but I can't remember..."
+		<mainChar> "It's good too see you agian...{wa 1} it's good to see you for the last time..."
+	-Move forward
+		<mainChar> "..{wa 1}No...maybe you mistook me with someone else..."
+		Nerine as ??? "I see...{wa 1}I guess I was wrong...{wa 1}but you look so familier to me..."
+		<mainChar> "..."
+		choice "Will you accept this fate?"
+		{
+			-Left all behind to move forward
+				Narrator "You passing by the girl{wa 1}...as all things should be."
+			-Look at her with the smile
+				<mainChar> "May the Sea of Flower guid your way..."
+		}
+}
+
+Narrator "Nerine looks at you with a sad expression on her face...{wa 1}she seems to be lost in thought..."
+"You can see that she is trying to remember something important...{wa 1}but she can't seem to recall it..."
+"You feel a pang of sadness in your heart as you watch her struggle..."
+"You wish you could help her remember...{wa 1}but you know that it's not your place to do so..."
+"You just have to let her find her own way..."
+
+Nerine as ??? "...{wa 1}Thank you for your time...{wa 1}I hope we can meet again someday...{wa 1}and maybe then I will remember..."
+
+SetLayerMedia(background FloweringWaves)
+
+Nerine "May the Sea of Flowers guid your way!"
+
+

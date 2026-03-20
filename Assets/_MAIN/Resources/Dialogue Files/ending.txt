@@ -1,0 +1,60 @@
+SetlayerMedia(background FloweringWaves)
+PlayAmbience(DragonVeinPiano)
+
+CreateCharacter(Nerine as Rin -e true)
+
+Nerine.SetPosition(0.9)
+Nerine.Animate(FaceRight)
+
+CreateCharacter(Lior -e false -i true)
+Lior.SetPosition(0.1)
+
+
+Nerine "..."
+"Sol,{wa 1} take Remi with you ...	"
+Nerine.UnHighlight(-i true)
+wait(1)
+Lior "What about you!"
+
+Nerine.Highlight(-i true)
+Nerine "I MUST CONTINUE TO MY PATH,{wa 2} IT'S MY FATE!"
+
+Lior "Rin, are you ok?,{wa 1} THERE MUST BE OTHER WAY!"
+Nerine "Sol...{wa 2}take care of Remi for me..."
+
+Lior "Rin..??!"
+Nerine "I'm sorry...{wa 1}for broken the promise..."(to see the FLOWERING WAVE of her hometown )
+Lior "Rin..{wa 1}Rin!!"...*sobs* *sobs* ~ {c}"there must be other way..." *sobs* *sob* 
+
+navigator "Many years has passed...Sol returned Abyss, become the 19th clan master and bring back fame and honor..."
+Lior "Rin..{wa 1}can you see...{wa 1} Every one is happy now, sorrow and pain are no longer exist...{wa 1}Remi joined Karma to find you...soon {wa 1}i'll left behind my clan once again...to find you...by the time comes,{ca 1}I hope we both can fufill our promise...at the the end..{wa 1}I hope to hear your voice for one last time..."
+navigator "A year later, the Invictus clan raised quickly to the 1st."
+"Lior still travel through Abyss and some time returned to the Invictus clan and for the Karma intels, most of the intels are fake and Sol never heard about the Garden..."
+
+The 10th elder "Master Lior... {wa 1}madam Remi just passed away...I'm sorry to give such a news before your departure..."
+Lior "Elder... {wa 1}i'm no longer being an clan master, i'm just....be my self"
+
+"Some where near the unknown Star's gate"
+Lior "Remi...don't you worry...{a}i'll find her at ANY cost...."
+	"...Rin...will i ever hear your voice again...{wa 1}you'd promise to see the flowering wave with me...{c}all of the Era glowing.."
+
+navigator "many years ago, The unknown power velt protect Rin in the colapse, make her vanishing to some where.... she survived after the impact but full of injured... she wake up in a world full off flowers...she realize her symbol GLowing and faded away..."
+"surrounding by lycoris"
+Nerine "is this...{wa 1}finally *sobs*...Lior.. *sobs*{wa 1} Remi...*sobs*{wa 1} forgive me for leaving you behind....{wc 1}WHY DID IT HAS TO BE SO HARD..."
+
+navigator "all of the Era glowing when Sol stand next to the unknow Star Gate"
+
+Nerine "you came back..{wa 1} by the flow of the time{c} Now I'm the last Keeper of Eden... "
+Lior "Rin...{wa 1}Rin!!!...{wa 1}it's you(*sob)..{wa 1}it's really you...{wc 1}finally..{wa 1}i've been waiting for so long(*sob)...{wa 1}just to see you one last time..."
+narrator "Lior grabs her hands with the lycoris.."
+"the red tears dropped out of the young girl's face into the lycoris in her hand...{c}The flower turns into a beautiful white one..."
+Nerine "...Lior?!!, you'd came back{wa 1}...after a long time...{wa 1}Lior..{wa 1}thank you.."
+
+Lior "Rin?..{wa 1}Rin!!!{wc 1} ...Our promise..."
+Nerine "Now i know what 'Life' is..{wc 1}Thank you...{wa 1 }For everythings."
+narrator "for the first time, a witch can reclaims all of emotion and ease her soul"
+
+narrator "And the only remains is....{c}A FLOWERING WAVE OF NOSTALGIA"
+
+
+ 

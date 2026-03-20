@@ -1,0 +1,5 @@
+Copyright (c) 2025 Tran Quoc Tuan
+All rights reserved.
+
+This code is submitted for academic purposes only.
+Redistribution, modification, or commercial use without permission is prohibited.

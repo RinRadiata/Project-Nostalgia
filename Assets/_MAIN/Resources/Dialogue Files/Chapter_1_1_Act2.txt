@@ -1,0 +1,5 @@
+setlayerMedia(background spider_lily)
+PlaySong(RainyMemory -vol 0.5)
+
+enter Nerine "This is the end of Act 1, thank you for participate in my small scholl project, the full releash is still in developement, pls stay tune!"
+

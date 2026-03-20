@@ -1,0 +1,82 @@
+setlayerMedia(background spider_lily)
+PlaySong(RegressionPiano -vol 0.5)
+
+Narrator "Chapter 1: The Flower That Blooms on the Other Shore"
+Narrator "Act 1. Higanbana: The River That Souls Cannot Cross"
+"Beyond the veil of life and death lies a river called 'River of Forgetfulness'."
+"It's waters are still, yet each ripple carries thousands of memories... dreams, promises, and tears long forgotten."
+"Along its banks bloom the otherworldly flowers, {wa 1}the Higanbana, the Flowers of the Other Shore.{wa 1}"
+"It is said that every petal holds a memory left behind.{wc 1} By a soul before stepping into the cycle of rebirth."
+"Red, white, or yellow{wc 1} Each color tells a story of love, sorrow, and parting."
+
+Narrator "A pale girl in white stands by the water, her eyes devoid of earthly light."
+
+enter Nerine as ??? "You still stand there, staring across the river..."
+Nerine.SetPosition(0.2)
+Nerine.Highlight()
+
+"This path is not meant for those who cling to memories.{wa 1}"
+"Once you cross the Bridge of Reincarnation,{wa 1} you will forget everything.. even your own name."
+
+$Nerine.bond = 0
+
+choice "What will you should tell her?"
+{
+	-You still remember your own 'name'!
+		$Nerine.bond += 1
+		input "Tell her your 'name'..."
+		SetPlayerName(<input>)
+		<mainChar> "I'm <mainChar>"
+		Nerine as ??? "...So you do have a name... {wa 1}How fortunate."
+		<mainChar> "..."
+	-Tell her you want to remember.
+		$Nerine.bond += 0
+		Narrator "You want to remember everything... your name, your past, and the promise you made...."
+		input "Tell her your...'name'"
+		SetPlayerName(<input>)
+		<mainChar> "Just call me <input> from now on!"
+		<mainChar> "I just want to remember everything."
+		Nerine as ??? "Then you have chosen the path full of pain."
+		"Those who hold onto their memories{wa 1}"
+		"are forever trapped between two shores, unable to move forward, unable to return. {wa 1}"
+		"That is the curse of 'Higanbana: The River That Souls Cannot Cross.'"
+}
+
+if ($Nerine.bond > 0)
+{
+	narrator "Your affection with Nerine has increase"
+}
+else
+{
+	narrator "Your affection with Nerine unchange"
+}
+
+<mainChar> "...I...,{wa 1}There's something...that I must find.{wc 1}A face... a smile... or perhaps a memory long faded?"
+
+Nerine.Highlight()
+
+Nerine as ??? "Then you have chosen the path of pain. {wa 1}Those who hold onto their memories are forever trapped between two shores {wa 1}"
+"unable to move forward, unable to return.{wc 1} That is the curse of 'Higanbana... The River That Souls Cannot Cross.'"
+
+Nerine.Hide(-i)
+
+Narrator "Higanbana flowers bloom in full, covering both banks.{wc 1} In the wind, countless whispers of lost souls can be heard."
+
+Narrator "Long ago, there were two lovers, Manju and Saka. {wa 1}One planted the flower, yet could never see it bloom.{wc 1}"
+"The other watched it bloom,{wa 1} yet never knew who planted it.{wc 1} Bound by heaven's decree,{wa 1} they were never meant to meet."
+"So they became the Higanbana.. one side the red flame of longing,{wa 1} the other the white silence of oblivion."
+"Every soul that passes this river leaves behind a color of its own: {wa 1} Red, for pain unending.	"
+"White, for release and purity.{wa 1} Yellow, for eternal separation."
+
+
+<mainChar> "Rin... That's her name.{wa 1} Why... why do I still remember her?"
+
+Narrator "Because once, she'd made a promise"
+
+Nerine.SetPosition(0.2)
+Nerine.Show(-i)
+Nerine.Highlight()
+
+Nerine "When the Higanbana blooms, we will meet again."
+
+Load(Chapter_1_1_Act2 -enqueue true)

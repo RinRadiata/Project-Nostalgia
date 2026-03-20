@@ -1,0 +1,177 @@
+setlayerMedia(background The_tower)
+PlayAmbience(OpusFlower -vol 0.5)
+CreateCharacter(Nerine -e false -i true), Nerine.SetPosition(0.2)
+CreateCharacter(Rose -e false -i false), Rose.SetPosition(0.8)
+
+ShowGalleryImage(01_the_tower)
+HideGalleryImage(01_the_tower -spd 1)
+
+[wait]PlaySFX(Writing)
+
+Nerine "Another night, and still no answers… What is it I’m searching for among these forgotten pages?"
+
+wait(1)
+
+setlayerMedia(background The_tower_room)
+ShowGalleryImage(02_the_tower_room)
+HideGalleryImage(02_the_tower_room -spd 1)
+
+Nerine.Show()
+Nerine.SetSprite(Nerine_Surprise)
+Nerine "That dream again… A sea of crimson flowers, turning pale… white, like a wave swallowing the land. Why does it follow me every night?"
+
+wait(1)
+PlaySFX(FootSteps)
+wait(3)
+PlaySFX(DoorKnocks)
+wait(2)
+
+Rose "Still awake, my apprentice? {wc 3} May I come in?"
+
+Nerine "Coming..."
+
+Narrator "The little witch open the door carefully..."
+
+PlaySFX(OpenAndCloseDoor)
+
+wait(1)
+
+Rose.Show()
+
+Nerine.SetSprite(Nerine_smile)
+
+Rose.Unhighlight()
+Nerine "Master Rose… I can’t sleep. {a}The mark on my hand—it’s glowing more often now."
+Nerine.Unhighlight()
+
+Rose.Highlight()
+Rose "The lycoris blooms within you. {wc 0.75}The time draws near, Nerine. Soon you’ll face a choice."
+Rose.Unhighlight()
+
+Nerine.Highlight()
+Nerine "A choice… about the Garden?"
+Nerine.Unhighlight()
+
+Rose.Highlight()
+Nerine.Unhighlight()
+Rose "'EDEN' is not simply a place. {wc 0.75}It is where witches confront their true selves… where the nameless are given their names."
+Rose.Unhighlight()
+
+Nerine.Highlight()
+Nerine "But why do I feel like I’m forgetting something important? Like a part of me is missing…"
+Nerine.Unhighlight()
+
+Rose.Highlight()
+Rose "...Memories are the price we pay to enter the Garden. {c}You must be willing to lose what you cherish most."
+Rose.Unhighlight()
+
+Nerine.Highlight()
+Nerine "But what if I don’t want to forget?"
+Nerine.Unhighlight()
+
+Rose.Highlight()
+Rose "Then you must seek the truth within yourself. {wa 0.75}The Garden will reveal what lies hidden in your heart."
+Rose.Unhighlight()
+
+Nerine.Highlight()
+Nerine "I don't know if I'm ready for that..."
+Nerine.Unhighlight()
+
+Rose.Highlight()
+Rose "Courage, Nerine. {wa 1}The path of a witch is never easy, but it is the only way to find your true self."
+Rose.Unhighlight()
+
+Nerine.Hide(), Rose.Hide()
+
+wait(1)
+
+Narrator "As Rose speaks, Nerine feels a strange sensation wash over her. The room around her begins to blur and fade away..."
+
+SetlayerMedia(background White_lycoris_field)
+ShowGalleryImage(03_white_lycoris_field)
+HideGalleryImage(03_white_lycoris_field -spd 1)
+
+CreateCharacter(El -e true -i false), EL.SetPosition(-0.025)
+
+EL.Show()
+
+Nerine.Show(), Nerine.SetPosition(0.7)
+
+EL.Highlight()
+Nerine.Unhighlight()
+EL "Rin! Look what I found!"
+EL.Unhighlight()
+
+wait(0.5)
+Nerine.SetSprite(Nerine_Surprise)
+
+Nerine.Highlight()
+Nerine "Don’t run so fast, El!"
+Nerine.Unhighlight()
+
+El.Hide(), Nerine.Hide()
+wait(0.5)
+Narrator "The memory fades, replaced by short flashback..."
+
+SetlayerMedia(background The_gate_and_red_lycoris_garden)
+ShowGalleryImage(04_the_gate_and_red_lycoris_garden)
+HideGalleryImage(04_the_gate_and_red_lycoris_garden -spd 1)
+
+Nerine "A memory… A girl called me ‘Rin’..."
+
+Nerine.SetSprite(Nerine_smile)
+
+Rose.Show(), Rose.SetPosition(0.8)
+
+Rose.Highlight()
+Nerine.Unhighlight()
+Rose "As your symbol awakens, so too will your memories. Follow them… and they will lead you to the truth."
+
+wait(1)
+
+SetlayerMedia(background The_tower_room)
+
+Nerine.Show(), Nerine.SetPosition(0.2)
+Rose.Show(), Rose.SetPosition(0.8)
+
+choice "What will you ask Rose?"
+{
+	-Ask about the "Flowering Wave"
+		Nerine.Highlight()
+		Rose.Unhighlight()
+		Nerine "Tell me, Master… why do witches seek the Garden?"
+		Nerine.Unhighlight()
+		wait(0.5)
+
+		Rose.Highlight()
+		Nerine.Unhighlight()
+		Rose "The Garden is different for each witch. {wa 1}Some seek power. {wa 0.5}Others seek answers. {wc 1}But the Garden demands a price—your memories of the ones you cherish."
+		Rose.Unhighlight()
+		wait(0.5)
+
+		Nerine.Highlight()
+		Nerine "Is that why my memories are broken? {wc 1}Have I… been there before?"
+		Nerine.Unhighlight()
+		wait(0.5)
+
+		Rose.Highlight()
+		Rose "That is what you must discover. {wa 1}The Garden speaks through the flowers blooming within your soul."
+		Load(Chapter_1_1_TheGarden -enqueue true)
+	-Ask about the "Memory"
+		Rose.Unhighlight()
+		Nerine "Master, that memory… who was the girl who called me ‘Rin’?"
+		Nerine.Unhighlight()
+		wait(0.5)
+
+		Rose.Highlight()
+		Rose "Memories are the keys to your truth, Nerine. The Garden will reveal what you have lost, if you are willing to remember."
+		Load(Chapter_1_2_TheMemories -enqueue true)
+}
+
+HideDB(-spd 1)
+Nerine.Move(1.2 -spd 2), Nerine.Hide()
+Rose.Move(0.8 -spd 2), Rose.Hide()
+wait(0.75)
+ClearLayerMedia(background), wait(1)
+StopAmbience()
+wait(1)

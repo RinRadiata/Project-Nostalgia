@@ -1,0 +1,39 @@
+
+narrator "Let's test some choices{c}Are you ready?"
+
+choice "Are you ready?"
+{
+	-Yes
+		"Great! Let's get started!"
+	-No
+		"Nvm, I'm doing it anyway!"
+}
+
+narrator "Here's another choice to make!"
+
+choice "Who is your types?"
+{
+	-El Clear
+		Neri "She looks Gogeous in this white dress!"
+		<mainChar> "Indeed, but she's still missing something to look perfect..."
+		Neri "Hmm...{wa 1}You mean her smile?"
+	-El Fail
+		Neri "She look so cute & confident at the same moment!"
+		<mainChar> "You don't want to see her when she's angry though..."
+		Neri "You sure did."
+	-DieIN
+		Neri "I don't know what to say..."
+		<mainChar> "I'll make a fast evaluate!"
+		choice "What are you going to tell Neri?"
+		{
+			-She look like Clear & Fail in the same body!
+				Neri "I'm not sure...{wa 1}she looks mystery from a distance."
+				"Although she's cute too...idk."
+			-She is represent for the PURE EVILS
+				Neri "Are you sure? but she's looks cute to me!"
+			-She just my type
+				Neri "Wow, didn't see thats coming!"
+		}
+		<mainChar> "Say what you will, I like them all"
+		Neri "Well, everyone's got their preferances."
+}

@@ -1,0 +1,11 @@
+
+
+input "What's your name?"
+
+$name = "The amazing <input>"
+
+narrator "So you are $name!"
+
+$name += ", the greatest artist!"
+
+narrator "Huh?, $name!?"

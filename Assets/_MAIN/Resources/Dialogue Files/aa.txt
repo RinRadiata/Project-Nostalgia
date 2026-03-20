@@ -1,0 +1,5 @@
+setlayerMedia(background spider_lily)
+PlaySong(RegressionPiano -vol 0.5)
+CreateCharacter(El -e true -i true), EL.SetPosition(1)
+
+El "Hello!"

@@ -1,0 +1,225 @@
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Video;
+
+public class GraphicObject
+{
+    private const string NAME_FORMAT = "Graphic - [{0}]";
+    private const string DEFAULT_UI_MATERIAL = "Default UI Material"; // Unity's default UI material name
+    private const string MATERIAL_PATH = "Materials/layerTransitionMaterial";
+    private const string MATERIAL_FIELD_COLOR = "_Color";
+    private const string MATERIAL_FIELD_MAINTEX = "_MainTex";
+    private const string MATERIAL_FIELD_BLENDTEX = "_BlendTex";
+    private const string MATERIAL_FIELD_BLEND = "_Blend";
+    private const string MATERIAL_FIELD_ALPHA = "_Alpha";
+    public RawImage renderer;
+
+    private GraphicLayer layer;
+
+    public bool isVideo => video != null;
+    public bool useAudio => (audio != null ? audio.mute : false);
+
+    public VideoPlayer video = null;
+    public AudioSource audio = null;
+
+    public string graphicPath = "";
+    public string graphicName  { get; private set; }
+
+    private Coroutine co_fadingIn = null;
+    private Coroutine co_fadingOut = null;
+
+    public GraphicObject(GraphicLayer layer, string graphicPath, Texture tex, bool immediate)
+    {
+        this.graphicPath = graphicPath;
+        this.layer = layer;
+
+        GameObject ob = new GameObject();
+        ob.transform.SetParent(layer.panel, false);
+        renderer = ob.AddComponent<RawImage>();
+
+        graphicName = tex.name;
+
+        InitGraphic(immediate);
+
+        renderer.name = string.Format(NAME_FORMAT, graphicName);
+        renderer.material.SetTexture(MATERIAL_FIELD_MAINTEX, tex);
+    }
+
+    public GraphicObject(GraphicLayer layer, string graphicPath, VideoClip clip, bool useAudio, bool immediate)
+    {
+        this.graphicPath = graphicPath;
+        this.layer = layer;
+
+        GameObject ob = new GameObject();
+        ob.transform.SetParent(layer.panel, false);
+        renderer = ob.AddComponent<RawImage>();
+
+        graphicName = clip.name;
+        renderer.name = string.Format(NAME_FORMAT, graphicName);
+
+        InitGraphic(immediate);
+
+        RenderTexture tex = new RenderTexture(Mathf.RoundToInt(clip.width), Mathf.RoundToInt(clip.height), 0); // 0 = default depth
+        renderer.material.SetTexture(MATERIAL_FIELD_MAINTEX, tex);
+
+        video = renderer.AddComponent<VideoPlayer>();
+        video.playOnAwake = true;
+        video.source = VideoSource.VideoClip;
+        video.clip = clip;
+        video.renderMode = VideoRenderMode.RenderTexture;
+        video.targetTexture = tex;
+        video.isLooping = true;
+
+        video.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        audio = video.AddComponent<AudioSource>();
+
+        audio.volume = immediate ? 1 : 0;
+        if (!useAudio)
+            audio.mute = true;
+
+        video.SetTargetAudioSource(0, audio);
+
+        video.frame = 0;
+        video.Prepare();
+        video.Play();
+
+        // this will fix the useAudio issue 
+        video.enabled = false;
+        video.enabled = true;
+    }
+
+    // initualize the graphic object
+    private void InitGraphic(bool immediate)
+    {
+        renderer.transform.localPosition = Vector3.zero;
+        renderer.transform.localScale = Vector3.one;
+
+        RectTransform rect = renderer.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        renderer.material = GetTransitionMaterial();
+
+        float startingOpacity = immediate ? 1.0f : 0.0f;
+        renderer.material.SetFloat(MATERIAL_FIELD_BLEND, startingOpacity);
+        renderer.material.SetFloat(MATERIAL_FIELD_ALPHA, startingOpacity);
+    }
+
+    private Material GetTransitionMaterial()
+    {
+        Material mat = Resources.Load<Material>(MATERIAL_PATH);
+
+        if (mat != null)
+            return new Material(mat);
+
+        return null;
+    }
+
+    GraphicPanelManager panelManager => GraphicPanelManager.instance;
+
+    public Coroutine FadeIn(float speed = 1f, Texture blend = null)
+    {
+        if (co_fadingOut != null)
+            panelManager.StopCoroutine(co_fadingOut);
+
+        if (co_fadingIn != null)
+            return co_fadingIn;
+
+        co_fadingIn = panelManager.StartCoroutine(Fading(1f, speed, blend));
+
+        return co_fadingIn;
+    }
+
+    public Coroutine FadeOut(float speed = 1f, Texture blend = null)
+    {
+        if (co_fadingIn != null)
+            panelManager.StopCoroutine(co_fadingIn);
+
+        if (co_fadingOut != null)
+            return co_fadingOut;
+
+        co_fadingOut = panelManager.StartCoroutine(Fading(0f, speed, blend));
+
+        return co_fadingOut;
+    }
+
+    private IEnumerator Fading(float target, float speed, Texture blend)
+    {
+        bool isBlending = blend != null;
+        bool fadingIn = target > 0;
+
+        // Early exit if renderer or its material is missing/destroyed
+        if (renderer == null || renderer.material == null)
+            yield break;
+
+        if (renderer.material.name == DEFAULT_UI_MATERIAL)
+        {
+            Texture tex = renderer.material.GetTexture(MATERIAL_FIELD_MAINTEX);
+            renderer.material = GetTransitionMaterial();
+            renderer.material.SetTexture(MATERIAL_FIELD_MAINTEX, tex);
+        }
+
+        renderer.material.SetTexture(MATERIAL_FIELD_BLENDTEX, blend);
+        renderer.material.SetFloat(MATERIAL_FIELD_ALPHA, isBlending ? 1 : fadingIn ? 0 : 1);
+        renderer.material.SetFloat(MATERIAL_FIELD_BLEND, isBlending ? fadingIn ? 0 : 1 : 1);
+
+        string opacityParam = isBlending ? MATERIAL_FIELD_BLEND : MATERIAL_FIELD_ALPHA;
+
+        while (renderer != null && renderer.material != null && renderer.material.GetFloat(opacityParam) != target)
+        {
+            float opacity = Mathf.MoveTowards(renderer.material.GetFloat(opacityParam), target, speed * Time.deltaTime);
+            renderer.material.SetFloat(opacityParam, opacity);
+
+            if (isVideo && audio != null)
+                audio.volume = opacity;
+
+            yield return null;
+
+            // Check again after yield in case renderer was destroyed externally
+            if (renderer == null || renderer.material == null)
+                yield break;
+        }
+
+        co_fadingIn = null;
+        co_fadingOut = null;
+
+        if (target == 0)
+        {
+            // Only destroy if renderer is still valid
+            if (renderer != null)
+                Destroy();
+        }
+        else if (renderer != null)
+        {
+            DestroyBackgroundGraphicsOnLayer();
+            if (renderer.material != null)
+                renderer.texture = renderer.material.GetTexture(MATERIAL_FIELD_MAINTEX);
+            renderer.material = null;
+        }
+    }
+
+    public void Destroy()
+    {
+        // Only proceed if renderer is still valid
+        if (renderer == null)
+            return;
+
+        if (layer.currentGraphic != null && layer.currentGraphic.renderer == renderer)
+            layer.currentGraphic = null;
+
+        if (layer.oldGraphics.Contains(this))
+            layer.oldGraphics.Remove(this);
+
+        Object.Destroy(renderer.gameObject);
+        renderer = null; // Mark as destroyed to prevent further access
+    }
+
+    private void DestroyBackgroundGraphicsOnLayer()
+    {
+        layer.DestroyOldGraphics();
+    }
+}

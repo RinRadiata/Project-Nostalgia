@@ -1,0 +1,41 @@
+
+SetLayerMedia(background FloweringWaves),
+
+createCharacter(Nerine -e true -i true)
+createCharacter(Neri -e true -i true)
+Neri.SetPosition(0.8)
+
+Nerine "Good to see you, Neri"
+Nerine.Move(0.3 -spd 0.7)
+Neri.Move(0.6 -spd 0.8)
+Neri "Hi there!, lets go to the beach together!"
+Nerine "Sure, I love the beach!"
+[wait]Neri.Animate(FaceRight)
+[wait]HideDB(-i true)
+
+Nerine.Move(1.5 -spd 2), Neri.Move(1.5 -spd 2), Neri.Animate(FaceRight), Nerine.Hide(), Neri.Hide()
+wait(0.75)
+ClearLayerMedia(background), wait(1)
+StopSong(), StopAmbience(), wait(1)
+
+SetLayerMedia(background -m "~/Graphics/Gallery/CxF_summer")
+playSong(RocketRide -vol 0.4)
+Nerine.Show(-i true), [wait]Neri.Show(-i true), Nerine.setPosition(0.2), Neri.setPosition(0.4)
+Nerine.Move(0.3 -spd 1.5), Neri.Move(0 -spd 1.5)
+
+wait(1)
+
+ShowDB(-i true)
+[wait]Nerine.Animate(Flip)
+Nerine "Hey, that's Fail and Clear, {c}Looks like they went back from the vacation."
+Neri "Yeah, they are back!{c}Anyway, lets go before the suns goes down!"
+
+[wait]HideUI(-spd 0.5)
+
+wait(1)
+
+[wait]ShowUI(-i true)
+
+"done"
+
+

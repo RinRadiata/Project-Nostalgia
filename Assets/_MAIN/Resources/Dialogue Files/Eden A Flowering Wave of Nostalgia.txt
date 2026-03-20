@@ -1,0 +1,105 @@
+ShowGalleryImage(The_tower)
+PlayAmbience(OpusFlower -vol 0.7)
+CreateCharacter(Rin -e true -i true), Rin.SetPosition(0.1)
+CreateCharacter(Rose -e true -i true), Rose.SetPosition(0.8)
+
+[wait]Rin.SetSprite(thoughtful)
+Rin "Another night.{wa} Another book.{wa} Another silence."
+Rin "They said witches find truth in isolation,{wa} but all I’ve found... is absence."
+Rin "That dream again. Always the same.{wa} A sea of red flowers…{wa} then white, like ash in wind."
+Rin "What am I forgetting?{wc}Or perhaps, what am I meant to never recall?"
+
+narrator "Rin closes her book, fingers tracing the golden-etched cover. Her symbol glows faintly. She clenches her hand."
+
+Rin.SetSprite(surprised)
+Rin "It’s glowing again. Stronger this time…"
+
+Rose.SetSprite(calm)
+Rose "Still awake, my apprentice? Even the moon tires before you."
+
+Rin.SetSprite(worried)
+Rin "I cannot rest. The dreams—"
+
+Rose.SetSprite(serious)
+Rose "Yes. I felt it in the air. The lycoris stirs."
+
+Rose.SetSprite(gentle)
+Rose "Your bloom deepens. The Garden is whispering to you."
+
+Rin "The Garden… you’ve mentioned it before. Why does it feel familiar?"
+
+Rose "Because it is. But familiarity does not always mean safety, child."
+
+HideGalleryImage(DeLuneTower_Night -spd 1)
+SetlayerMedia(background WhiteLilyField)
+
+CreateCharacter(YoungEl -e true -i true), YoungEl.SetPosition(0.2)
+CreateCharacter(YoungRin -e true -i true), YoungRin.SetPosition(0.7)
+
+YoungEl.SetSprite(happy)
+YoungEl "Rinnie! Look what I found!"
+
+YoungRin.SetSprite(laughing)
+YoungRin "El! Don’t run too far!"
+
+YoungEl.SetSprite(smiling)
+YoungEl "It suits you. You’re always so serious, Rinnie."
+
+narrator "The scene shimmers and blurs. Rin’s present voice echoes over the memory."
+
+Rin "That voice… El. I remember her. My heart knew before my mind."
+
+SetlayerMedia(background DeLuneTower_Night)
+Rin.SetSprite(dazed)
+Rin "El… I had a friend."
+
+Rose.SetSprite(soft)
+Rose "She was your light. And in time, you will remember why."
+
+choice "What do you want to ask Rose?"
+{
+    -Ask about the Garden
+        Rin "What is the Garden, truly? Why do I feel it calling?"
+        Rose "It is the truth behind the veil, the origin of your kind… and the end of many."
+        Rin "My symbol reacts to it."
+        Rose "Because part of you already touched it. But you left something behind."
+    -Ask about the Memory
+        Rin "That girl… her name was El."
+        Rose "A bond forged before you became who you are now."
+        Rin "Is she alive?"
+        Rose "Perhaps. Or perhaps she waits in the place where all memories are weighed."
+        Rin "The Garden?"
+        Rose "If you go there, child, be ready to pay in remembrance."
+}
+
+SetlayerMedia(background TowerWindow_Moonlight)
+Rin.SetSprite(serious)
+Rose.SetSprite(prophetic)
+Rose "You stand at the threshold. Once you cross it, you may never return whole."
+
+Rin.SetSprite(sad)
+Rin "Will I forget… El?"
+
+Rose.SetSprite(sad)
+Rose "You might forget even me."
+
+narrator "Silence falls. The wind whispers through the stained glass."
+
+Rin.SetSprite(resolute)
+Rin "Then the Garden isn’t just a place. It’s a test."
+
+Rose "It always has been."
+
+SetlayerMedia(background TowerWindow_Moonlight)
+Rin.SetSprite(resolute)
+narrator "Rin stands alone, gazing out the tall window. The forest stretches beneath, silver under moonlight. Her cloak flutters gently."
+
+Rin (monologue) "I don’t know what waits beyond the trees. But if I stay… I’ll fade."
+
+Rin "El… I’ll find you. Even if I must lose myself again."
+
+[FadeToBlack]
+narrator "The symbol pulses one last time."
+
+StopAmbience()
+

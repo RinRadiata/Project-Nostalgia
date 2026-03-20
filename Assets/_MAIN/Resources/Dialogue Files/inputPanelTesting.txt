@@ -1,0 +1,8 @@
+
+narrator "What's your name?"
+
+input "Please be nice or the Dev will cry!"
+
+<mainChar> "Good to see you, <input>!, i'm at level <playerLevel>."
+
+Neri "I hope you like this input panel test!"

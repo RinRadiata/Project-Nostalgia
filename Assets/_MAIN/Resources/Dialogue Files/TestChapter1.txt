@@ -1,0 +1,49 @@
+﻿setlayerMedia(background FloweringWaves)
+PlayAmbience(DragonVeinPiano -vol 1)
+CreateCharacter(Nerine -e true -i true), Nerine.SetPosition(0.1)
+
+Nerine.Show()
+
+[wait]Nerine.SetSprite(Nerine_surprise)
+Nerine "Hey, i think i saw something over there!"
+
+ShowGalleryImage(0_FloweringWaves)
+HideGalleryImage(0_FloweringWaves -spd 1)
+
+SetlayerMedia(background The_tower)
+
+input "What's your name?"
+
+SetPlayerName(<input>)
+
+if (<mainChar> == "Adam")
+{
+	narrator "So you don't have a middle name? <mainChar>..."
+	narrator "hmm...it's seem you're not in any Noble Clan aren't you"
+	narrator "But it's fine, we accept all!"
+}
+else
+{
+	narrator "It's nice to meet you, <mainChar>"
+	narrator "So...{a}Do you come here often?"
+}
+
+wait(1)
+
+choice "What should you respone to Nerine?"
+{
+	-Look To The Ship
+		Nerine "Okay..{wa 1}okay~"
+		Load(TestChapter1_Ship -enqueue true)
+	-Look To The Gate
+
+		Nerine "Huh? {wa 1}are you sure...{wa 1}It's must be the sign!"
+		Load(TestChapter1_Gate -enqueue true)
+}
+
+HideDB(-spd 1)
+Nerine.Move(1.5 -spd 2), Nerine.Hide()
+wait(0.75)
+ClearLayerMedia(background), wait(1)
+StopAmbience()
+wait(1)

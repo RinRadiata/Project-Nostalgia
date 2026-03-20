@@ -1,0 +1,4 @@
+setlayerMedia(background spider_lily)
+PlaySong(RegressionPiano)
+
+Narrator "this chapter is not releash yet, please stay tune~!(you can choose other option)"

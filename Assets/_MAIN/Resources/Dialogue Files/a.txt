@@ -1,0 +1,25 @@
+
+CreateCharacter(Nerine -e true -i true)
+Nerine.SetPosition(0.5)
+
+setLayerMedia(background spider_lily)
+
+$nerine.affection = 0
+$nerine.diaryUnlocked = false
+
+Nerine "good to see you"
+
+Choice "will everything changes!"
+	{
+		-YES
+		$nerine.affection += 60
+		-NO
+		$nerine.affection += 0 
+	}
+
+if ($nerine.affection >= 10)
+{
+	Narrator "your affection with nerine has increased!, new diary unlocked!"
+	$nerine.diaryUnlocked = true 
+}
+

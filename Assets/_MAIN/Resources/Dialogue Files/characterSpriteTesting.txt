@@ -1,0 +1,3 @@
+SetLayerMedia(background FloweringWaves)
+
+enter Raelin [0:B3,1:F9] "Hi"

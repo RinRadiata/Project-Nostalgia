@@ -1,0 +1,10 @@
+SetLayerMedia(background The_tower_room), PlaySong(Calm -vol 0.1)
+Nerine.Show(), Nerine.SetSprite(Nerine_smile),
+
+Nerine.SetPosition(-0.5)
+Nerine.Move(0.2 -spd 1.5)
+wait(1)
+
+ShowDB(-i true)
+Nerine "Stay beside me!"
+Nerine.UnHighlight(-i true)

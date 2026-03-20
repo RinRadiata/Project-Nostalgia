@@ -1,0 +1,5 @@
+narrator "What's your name?"
+
+input "What is your name?"
+
+<input> "My name is <input>."

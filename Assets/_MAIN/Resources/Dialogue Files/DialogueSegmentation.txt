@@ -1,0 +1,12 @@
+this is a random line of dialogue here.
+Elen "command(arguments goes here)"
+Elen "(this is a thought)"
+Elen "this is some dialogue" command(args goes here)
+command(more args go here), argCom(yes another one)
+command("this is another one again")
+
+
+print_1p("this is a command running straight from my dialogue file!")
+
+Nerine "Move Left and then Right", print_1p("Start Moving"), [wait]moveCharDemo(left), [wait]moveCharDemo(right), print_1p("Done Moving")
+     

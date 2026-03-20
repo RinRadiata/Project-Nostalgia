@@ -1,0 +1,14 @@
+choice "Where do we go?"
+{
+	-The Eden's Gate
+		$choice = Eden's Gate
+	-The Ship
+		$choice = Ship
+}
+
+if ($choice == Eden's Gate)
+{
+	narrator "To the Gate we go!"
+}
+
+narrator "What are we waiting for? Let's go to The $choice "

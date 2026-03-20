@@ -1,0 +1,14 @@
+
+
+PlayAmbience(RainyMood)
+SetLayerMedia(background FloweringWaves)
+PlaySong("Rainy Memory" -sv 0.5)
+PlayVoice(Marija/Violinist/Start/3)
+enter Nerine "Yes, It's working!"
+Nerine "The Melody of the rain is so charming, isn't it?"
+enter Neri "Whoa, this is amazing!"
+
+StopSong()
+StopAmbience()
+
+wait(100)

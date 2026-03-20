@@ -1,0 +1,60 @@
+$nerine.affection = 0
+$nerine.diaryUnlocked = false
+
+$el.affection = 0
+$el.diaryUnlocked = false
+
+CreateCharacter(EL -i true -e true) 
+CreateCharacter(Nerine -i true -e true) 
+
+setLayerMedia(background spider_lily)
+EL.SetPosition(0)
+Nerine.SetPosition(1)
+
+EL "Do you remember me?"
+Nerine "You shouldn't have come back."
+
+choice "How will you respond?"
+{
+    -Be gentle
+        $el.affection += 15
+        $nerine.affection += 5
+
+    -Stay silent
+        $el.affection += 5
+        $nerine.affection += 10
+
+    -Walk away
+        $nerine.affection -= 5
+}
+
+EL "Do you remember me?"
+Nerine "You shouldn't have come back."
+
+choice "How will you respond?"
+{
+    -huh
+        $el.affection += 15
+        $nerine.affection += 5
+
+    -ok
+        $el.affection += 5
+        $nerine.affection += 10
+
+    -fine
+        $nerine.affection -= 5
+}
+
+
+if ($el.affection >= 10)
+{
+    $el.diaryUnlocked = true
+    narrator "EL's diary has been unlocked!"
+}
+
+if ($nerine.affection >= 10)
+{
+    $nerine.diaryUnlocked = true
+    narrator "Nerine's diary has been unlocked!"
+}
+
