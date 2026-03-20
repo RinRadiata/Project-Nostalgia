@@ -1,5 +1,11 @@
 Copyright (c) 2025 Tran Quoc Tuan
 All rights reserved.
 
-This code is submitted for academic purposes only.
-Redistribution, modification, or commercial use without permission is prohibited.
+This software is developed for academic purposes only.
+Unauthorized redistribution, modification, or commercial use 
+of this code, in whole or in part, is strictly prohibited 
+without prior written permission from the author.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED. THE AUTHOR SHALL NOT BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
