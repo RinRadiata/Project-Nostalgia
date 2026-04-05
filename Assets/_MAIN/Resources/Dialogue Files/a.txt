@@ -1,25 +1,47 @@
 
-CreateCharacter(Nerine -e true -i true)
-Nerine.SetPosition(0.5)
+SetLayerMedia(background "Fantasy City" -aud true -i true)
 
-setLayerMedia(background spider_lily)
+CreateCharacter(Parus -e true -i true)
+parus.SetPosition(0.5)
 
-$nerine.affection = 0
-$nerine.diaryUnlocked = false
+$parus.affection = 0
+$parus.diaryUnlocked = false
 
-Nerine "good to see you"
+PlayVoice(Parus_select -v 1 -p 1)
 
-Choice "will everything changes!"
+Parus "Choose this!"
+
+ClearLayerMedia(background -b feathers -spd 0.5)
+
+SetLayerMedia(cinematic -m "~/Graphics/gallery/05_a_look_to_the_garden")
+
+Parus "Leche please gimme summer swimsuit skin as soon as possible~"
+
+parus.Show()
+
+narrator "Scent's can't wait to see it too!"
+
+wait(1)
+
+[wait]PlayVoice(Parus_thisOne -v 1 -p 1)
+
+Choice "Will you accepted to draw Parus Swimsuit skin?"
 	{
-		-YES
-		$nerine.affection += 60
-		-NO
-		$nerine.affection += 0 
+		-YESSSSSSSSSSSSSSS !!!
+		$parus.affection += 10
+		-DEFINITELY !!!
+		$parus.affection += 10
+		-ABSOLUTELY !!!
+		$parus.affection += 10
+		-OF COURSE I WILL !!!
+		$parus.affection += 10
 	}
 
-if ($nerine.affection >= 10)
+[wait]PlayVoice(Parus_happy -v 1 -p 1)
+
+if ($parus.affection >= 10)
 {
-	Narrator "your affection with nerine has increased!, new diary unlocked!"
-	$nerine.diaryUnlocked = true 
+	Narrator "your affection with Parunan has increased!, thankyou Leche!"
+	$parus.diaryUnlocked = true 
 }
 
