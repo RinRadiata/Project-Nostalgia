@@ -20,7 +20,7 @@ public class MinigameSceneManager : MonoBehaviour
         string minigameID = (string)idObj;
         string returnScene = (string)returnSceneObj;
 
-        //save flags
+        // save flags
         VariableStore.TrySetValue($"{characterID}.minigame.{minigameID}.completed", true);
         VariableStore.TrySetValue($"{characterID}.minigame.{minigameID}.perfect", perfect);
 
@@ -31,14 +31,13 @@ public class MinigameSceneManager : MonoBehaviour
 
         VariableStore.TrySetValue($"{characterID}.diary.{minigameID}.unlocked", true);
 
-        SceneManager.LoadScene(returnScene); //return to current active dialogue scene
+        SceneManager.LoadScene(returnScene); // return to active dialogue scene
     }
 
     public void FailMinigame()
     {
         VariableStore.TryGetValue("Minigame.returnScene", out object returnSceneObj);
         string returnScene = (string)returnSceneObj;
-
         SceneManager.LoadScene(returnScene);
     }
 }

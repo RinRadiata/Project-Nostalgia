@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MAIN/Scenes/Nostalgia.unity
     guid: 9647cf10fadfb9d4fb3d7d5e5978d376
+  - enabled: 1
+    path: Assets/_MAIN/Scenes/Minigame_Memory1.unity
+    guid: 9e76294cf3133e14c9ad9b246c312186
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b21467906c925824fb235e064cec4f17, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,0 +1,52 @@
+$nerine.affection = 0
+$nerine.diaryUnlocked = false
+
+CreateCharacter(Nerine -i true -e true)
+
+setLayerMedia(background spider_lily)
+
+Nerine "..."
+
+Nerine "This place... feels familiar."
+
+choice "What do you feel?"
+{
+    -Warm
+        $nerine.affection += 5
+
+    -Confused
+        $nerine.affection += 3
+
+    -Nothing
+        $nerine.affection += 1
+}
+
+Nerine "Fragments... I can't see them clearly."
+
+if ($nerine.affection >= 5)
+{
+    narrator "A memory begins to surface..."
+
+    playminigame(Memo1 -char Nerine -scene Minigame_Memory1)
+}
+
+Nerine "..."
+
+if ($nerine.minigame.memory1.completed == true)
+{
+    if ($nerine.minigame.memory1.perfect == true)
+    {
+        Nerine "You remembered everything... perfectly."
+    }
+    else
+    {
+        Nerine "Even if it's incomplete... thank you."
+    }
+}
+
+if ($nerine.diary.memory1.unlocked == true)
+{
+    narrator "New diary entry unlocked: Memory 1"
+}
+
+Nerine "Maybe... we can remember more together."

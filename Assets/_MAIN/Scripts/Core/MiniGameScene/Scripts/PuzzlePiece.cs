@@ -1,47 +1,94 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PuzzlePiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public RectTransform correctSlot;
+    public int pieceID;
     public PuzzleController controller;
 
     private RectTransform rectTransform;
-    private Canvas canvas;
     private CanvasGroup canvasGroup;
-    private Vector3 startPosition;
+    private LayoutElement layout;
+
+    private Transform originalParent;
+    private bool isPlaced = false;
+
+    public bool IsPlaced => isPlaced;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
-        startPosition = rectTransform.position;
+        layout = GetComponent<LayoutElement>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (isPlaced) return;
+
+        PuzzleSlot.SetDraggingPiece(this);
+
+        originalParent = transform.parent;
+
         canvasGroup.blocksRaycasts = false;
+        layout.ignoreLayout = true;
+
+        transform.SetParent(controller.dragLayer, true);
+        transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        if (isPlaced) return;
+
+        Vector2 pos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            controller.canvasRect,
+            eventData.position,
+            eventData.pressEventCamera,
+            out pos
+        );
+
+        rectTransform.localPosition = pos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
+        PuzzleSlot.SetDraggingPiece(null);
 
-        if (Vector3.Distance(rectTransform.position, correctSlot.position) < 40f)
+        if (!isPlaced)
         {
-            rectTransform.position = correctSlot.position;
-            controller.PiecePlacedCorrect();
-            enabled = false;
+            transform.SetParent(originalParent, false);
+            layout.ignoreLayout = false;
         }
-        else
+    }
+
+    public void TryPlace(PuzzleSlot slot)
+    {
+        if (slot.slotID == pieceID)
         {
-            rectTransform.position = startPosition;
+            isPlaced = true;
+
+            transform.SetParent(slot.transform, false);
+            transform.SetAsLastSibling();
+
+            RectTransform rt = GetComponent<RectTransform>();
+
+            //reset the pieces rect transform to the slot's rect transform so it snaps perfectly into place, worth 4hours to find a solotion for this fk 
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+
+            rt.anchoredPosition = Vector2.zero;
+            rt.localRotation = Quaternion.identity;
+            rt.localScale = Vector3.one;
+
+            canvasGroup.blocksRaycasts = true;
+
+            slot.SetPlacedColor();
+            controller.PiecePlacedCorrect();
         }
     }
 }
