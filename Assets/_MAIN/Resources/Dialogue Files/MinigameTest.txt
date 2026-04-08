@@ -27,7 +27,7 @@ if ($nerine.affection >= 5)
 {
     narrator "A memory begins to surface..."
 
-    playminigame(Memo1 -char Nerine -scene Minigame_Memory1)
+    playminigame(Lune -char Nerine -scene Minigame_Memory1)
 }
 
 Nerine "..."
