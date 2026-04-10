@@ -43339,6 +43339,7 @@ GameObject:
   - component: {fileID: 1237608631}
   - component: {fileID: 1237608632}
   - component: {fileID: 1237608633}
+  - component: {fileID: 1237608634}
   m_Layer: 0
   m_Name: DialogueSystem Controller
   m_TagString: Untagged
@@ -43396,6 +43397,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusText: {fileID: 1601791125}
   allowToggle: 1
+--- !u!114 &1237608634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237608630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 764ea5ce13e81994fa0dc8ff01e59ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinigameResume
 --- !u!43 &1243485150
 Mesh:
   m_ObjectHideFlags: 0
@@ -82186,7 +82199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118899705789168731, guid: de2e9a6fa820bc941881aca2eb82868a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.1300049
+      value: -1.1298828
       objectReference: {fileID: 0}
     - target: {fileID: 8118899705789168731, guid: de2e9a6fa820bc941881aca2eb82868a, type: 3}
       propertyPath: m_AnchoredPosition.y

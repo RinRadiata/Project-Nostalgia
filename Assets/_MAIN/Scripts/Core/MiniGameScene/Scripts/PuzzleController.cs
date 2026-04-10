@@ -12,11 +12,56 @@ public class PuzzleController : MonoBehaviour
     public PuzzlePiece[] allPieces;
     public int totalPieces = 9;
 
+    [Header("UI Panels")]
+    public GameObject titlePanel;
+    public GameObject completionPanel;
+    public PuzzleCompletionUI completionUI;
+    public GameObject puzzleArea;
+
+    [Header("Timer (Optional)")]
+    public bool useTimer = false;
+    public float timeLimit = 120f; // in seconds
+    private float elapsedTime = 0f;
+    private bool timerRunning = false;
+
     private int correctPieces = 0;
+
+    // perfect = done in under half the time limit, or if no timer is used = always perfect
+    private bool isPerfect => !useTimer || elapsedTime <= timeLimit / 2f;
 
     void Start()
     {
+        // show the title panel first and hide the completion panel and puzzle area at the start
+        if (titlePanel != null) titlePanel.SetActive(true);
+        if (completionPanel != null) completionPanel.SetActive(false);
+        if (puzzleArea != null) puzzleArea.SetActive(false);  // hide the puzzle area until StartPuzzle() is called
+
+        SetPiecesInteractable(false);
+
         StartCoroutine(DelayedShuffle());
+    }
+
+    void Update()
+    {
+        if (timerRunning && useTimer)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= timeLimit)
+            {
+                timerRunning = false;
+                // Hết giờ = fail
+                MinigameSceneManager.instance.FailMinigame();
+            }
+        }
+    }
+
+    // call from PuzzleTitleUI when start button clicked
+    public void StartPuzzle()
+    {
+        if (titlePanel != null) titlePanel.SetActive(false);
+        if (puzzleArea != null) puzzleArea.SetActive(true);
+        SetPiecesInteractable(true);
+        timerRunning = useTimer;
     }
 
     IEnumerator DelayedShuffle()
@@ -52,11 +97,27 @@ public class PuzzleController : MonoBehaviour
 
         if (correctPieces >= totalPieces)
         {
-            Debug.Log("done!");
+            timerRunning = false;
+            StartCoroutine(ShowCompletion());
         }
         else
         {
             ShuffleRemainingPieces();
+        }
+    }
+
+    IEnumerator ShowCompletion()
+    {
+        yield return new WaitForSeconds(0.8f);
+
+        // save data BEFORE setting active completion panel, in case Show() needs to read from VariableStore to determine what to show
+        MinigameSceneManager.instance.FinishMinigame(isPerfect);
+
+        if (completionPanel != null)
+        {
+            completionPanel.SetActive(true);
+            if (completionUI != null)
+                completionUI.Show(isPerfect, elapsedTime);
         }
     }
 
@@ -85,5 +146,14 @@ public class PuzzleController : MonoBehaviour
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(pieceGrid as RectTransform);
+    }
+
+    void SetPiecesInteractable(bool state)
+    {
+        foreach (var piece in allPieces)
+        {
+            var cg = piece.GetComponent<CanvasGroup>();
+            if (cg != null) cg.blocksRaycasts = state;
+        }
     }
 }

@@ -1,0 +1,30 @@
+$nerine.affection = 0
+$nerine.minigame.Lune.completed = false
+$nerine.minigame.Lune.perfect = false
+$nerine.diary.Lune.unlocked = false
+
+CreateCharacter(Nerine -i true -e true)
+setLayerMedia(background spider_lily)
+
+Nerine "..."
+Nerine "This place... feels familiar."
+
+choice "What do you feel?"
+{
+    -Warm
+        $nerine.affection += 5
+
+    -Confused
+        $nerine.affection += 3
+
+    -Nothing
+        $nerine.affection += 1
+}
+
+Nerine "Fragments... I can't see them clearly."
+
+if ($nerine.affection >= 5)
+{
+    narrator "A memory begins to surface..."
+    playminigame(Lune -char Nerine -scene Minigame_Memory1)
+}

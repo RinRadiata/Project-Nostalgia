@@ -81,24 +81,30 @@ public class DiaryPanelController : MonoBehaviour
             DiaryEntryData entry = currentCharacter.diaryEntries[i];
 
             GameObject obj = Instantiate(diaryEntryPrefab, diaryContent);
-            bool unlocked = affection >= entry.requiredAffection;
 
-            // fetch date (if unlocked) or create date (if first time unlock) automatically
-            string date = GetEntryDate(currentCharacter.characterID, i, unlocked);
+            // use method in DiaryEntryData to check if it's unlocked, which will handle both affection and minigame unlocks
+            bool unlocked = entry.IsUnlocked(currentCharacter.characterID, affection);
+
+            string date = GetEntryDate(currentCharacter.characterID, i, entry, unlocked);
 
             obj.GetComponent<DiaryEntryUI>()
                 .Setup(entry, unlocked, affection, date);
         }
     }
 
-    string GetEntryDate(string characterID, int index, bool unlocked)
+    string GetEntryDate(string characterID, int index, DiaryEntryData entry, bool unlocked)
     {
-        string varName = characterID + ".entry_" + index + "_date";
-
         if (!unlocked)
             return "Locked";
 
-        // if first time unlock then create variable with current date
+        // If this entry is unlocked by a minigame, get the date from the minigame
+        string minigameDate = entry.GetUnlockDate(characterID);
+        if (!string.IsNullOrEmpty(minigameDate))
+            return minigameDate;
+
+        // fallback, if entry is unlocked by affection, store/get date from VariableStore
+        string varName = characterID + ".entry_" + index + "_date";
+
         if (!VariableStore.HasVariable(varName))
         {
             string time = System.DateTime.Now.ToString("MMM dd, yyyy HH:mm");
@@ -106,13 +112,11 @@ public class DiaryPanelController : MonoBehaviour
             return time;
         }
 
-        // if already unlocked then fetch the existed date of that entry
         if (VariableStore.TryGetValue(varName, out object value))
             return value.ToString();
 
         return "";
     }
-
 
     public string GetFirstUnlockedCharacter(string fallbackID)
     {
