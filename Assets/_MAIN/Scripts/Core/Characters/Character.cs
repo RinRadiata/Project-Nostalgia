@@ -313,7 +313,15 @@ namespace CHARACTERS
 
         public void Animate(string animation)
         {
-            animator.SetTrigger(animation);
+            // For Live2D characters, use direct Play() instead of SetTrigger(), for cubism l2d sdk 4.2 capable
+            if (this is Character_Live2D live2D)
+            {
+                live2D.SetMotion(animation);
+            }
+            else
+            {
+                animator.SetTrigger(animation);
+            }
         }
 
         public void Animate(string animation, bool state)
