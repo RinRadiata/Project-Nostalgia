@@ -121,3 +121,15 @@ MonoBehaviour:
         Value: {fileID: -831843799, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
       - Key: F23
         Value: {fileID: 2079976379, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+  - name: Neri
+    alias: nr
+    characterID: Neri
+    characterType: 3
+    nameColor: {r: 0.90188676, g: 0.60409397, b: 0.7544359, a: 1}
+    dialogueColor: {r: 0.93207544, g: 0.80151296, b: 0.3429333, a: 1}
+    nameFont: {fileID: 11400000, guid: af29e82c2e47e344585e5130011db2ca, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
+    nameFontScale: 1
+    dialogueFontScale: 1
+    sprites:
+      _serializedList: []

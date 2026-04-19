@@ -1,5 +1,33 @@
-setlayerMedia(background spider_lily)
+setLayerMedia(background spider_lily)
 PlaySong(RegressionPiano -vol 0.5)
-CreateCharacter(El -e true -i true), EL.SetPosition(1)
 
-El "Hello!"
+CreateCharacter(Nerine -e true -i true)
+CreateCharacter(Neri -e true -i true)
+
+Neri.Show()
+
+Nerine.SetPosition(0.8)
+Neri.SetPosition(0.2)
+
+Neri.Animate(Idle)
+
+Nerine.Highlight()
+Neri.Unhighlight()
+Nerine "Hello there!"
+
+Neri.Animate(IdleTalk)
+Neri.Highlight()
+Nerine.Unhighlight()
+Neri "Hi! How are you doing?"
+
+Neri.Animate(Idle)
+Nerine.Highlight()
+Neri.Unhighlight()
+Nerine "I'm doing well, thank you for asking."
+
+Neri.Animate(IdleTalk)
+Neri.Highlight()
+Nerine.Unhighlight()
+Neri "That's wonderful to hear!"
+
+Neri.Animate(Idle)
