@@ -2,9 +2,11 @@ setLayerMedia(background spider_lily)
 
 CreateCharacter(Neri -e true -i true)
 
-
 Neri.SetPosition(0.2)
 
-Neri.Animate(IdleTalk)
+[wait]Neri.Animate(IdleTalk)
 Neri "Hi! How are you doing?"
 
+Neri.Animate(Idle)
+
+Neri "this testing bothering me ya know??!"
