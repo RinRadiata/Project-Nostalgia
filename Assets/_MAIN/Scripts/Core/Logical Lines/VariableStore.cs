@@ -1,7 +1,8 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class VariableStore
 {
@@ -153,20 +154,44 @@ public class VariableStore
         return true;
     }
 
+    //private static (string[], Database, string) ExtractInfo(string name)
+    //{
+    //    string[] parts = name.Split(DATABASE_VARIABLE_RELATIONAL_ID);
+    //    Database db = parts.Length > 1 ? GetDatabase(parts[0]) : defaultDatabase;
+    //    string variableName = parts.Length > 1 ? parts[1] : parts[0]; //if we split it, we get the 2nd item, otherwise we get the 1st (and only) item
+
+    //    return (parts, db, variableName);
+    //}
     private static (string[], Database, string) ExtractInfo(string name)
     {
         string[] parts = name.Split(DATABASE_VARIABLE_RELATIONAL_ID);
+
         Database db = parts.Length > 1 ? GetDatabase(parts[0]) : defaultDatabase;
-        string variableName = parts.Length > 1 ? parts[1] : parts[0]; //if we split it, we get the 2nd item, otherwise we get the 1st (and only) item
+
+        string variableName = parts.Length > 1
+            ? string.Join(DATABASE_VARIABLE_RELATIONAL_ID.ToString(), parts.Skip(1))
+            : parts[0];
 
         return (parts, db, variableName);
     }
 
+    //public static bool HasVariable(string name)
+    //{
+    //    string[] parts = name.Split(DATABASE_VARIABLE_RELATIONAL_ID);
+    //    Database db = parts.Length > 1 ? GetDatabase(parts[0]) : defaultDatabase;
+    //    string variableName = parts.Length > 1 ? parts[1] : parts[0];
+
+    //    return db.variables.ContainsKey(variableName);
+    //}
     public static bool HasVariable(string name)
     {
         string[] parts = name.Split(DATABASE_VARIABLE_RELATIONAL_ID);
+
         Database db = parts.Length > 1 ? GetDatabase(parts[0]) : defaultDatabase;
-        string variableName = parts.Length > 1 ? parts[1] : parts[0];
+
+        string variableName = parts.Length > 1
+            ? string.Join(DATABASE_VARIABLE_RELATIONAL_ID.ToString(), parts.Skip(1))
+            : parts[0];
 
         return db.variables.ContainsKey(variableName);
     }

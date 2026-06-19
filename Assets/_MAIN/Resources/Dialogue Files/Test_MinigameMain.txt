@@ -1,11 +1,7 @@
-$nerine.affection = 0
-$nerine.diaryUnlocked = false
-$nerine.minigame.Lune.completed = false
-$nerine.minigame.Lune.perfect = false
-$nerine.diary.Lune.unlocked = false
-
 CreateCharacter(Nerine -i true -e true)
 setLayerMedia(background spider_lily)
+
+Nerine.SetPosition(0.2)
 
 Nerine "..."
 Nerine "This place... feels familiar."
@@ -27,7 +23,11 @@ Nerine "Fragments... I can't see them clearly."
 if ($nerine.affection >= 5)
 {
 	narrator "A memory begins to surface..."
-	playminigame(Lune -char Nerine -scene Minigame_Memory1)
+	playminigame(Lune -char nerine -scene Minigame_Memory1)
+}
+else
+{
+	Nerine "No... it is still too faint."
 }
 
 Nerine "..."
@@ -42,6 +42,10 @@ if ($nerine.minigame.Lune.completed == true)
 	{
 		Nerine "Even if it's incomplete... thank you."
 	}
+}
+else
+{
+	Nerine "The memory is still waiting for us."
 }
 
 if ($nerine.diary.Lune.unlocked == true)

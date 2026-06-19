@@ -172,15 +172,13 @@ public class PuzzleCompletionUI : MonoBehaviour
 
     void ShowDiaryNotification(string memID)
     {
-        if (diaryUnlockNotif == null) return;
+        if (diaryUnlockNotif == null)
+            return;
 
         VariableStore.TryGetValue("Minigame.currentCharacter", out object charObj);
         string charID = charObj?.ToString() ?? "";
 
-        // Đọc flag mà FinishMinigame() đã set
-        bool unlocked = false;
-        if (VariableStore.TryGetValue($"{charID}.diary.{memID}.unlocked", out object val))
-            unlocked = val is bool b && b;
+        bool unlocked = DiaryProgress.IsDiaryEntryUnlocked(charID, memID);
 
         diaryUnlockNotif.SetActive(unlocked);
 

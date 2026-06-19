@@ -1,47 +1,54 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
+
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class MinigameDialogueBridge : MonoBehaviour
 {
     public static MinigameDialogueBridge instance { get; private set; }
 
     [Header("UI References")]
-    [Tooltip("Root panel of the dialogue box (will be shown/hidden)")]
     public GameObject dialogueRoot;
-
-    [Tooltip("Text displaying the dialogue")]
     public TextMeshProUGUI dialogueText;
 
-    [Tooltip("Root of the name box")]
     public GameObject nameRoot;
-
-    [Tooltip("Text displaying the character's name")]
     public TextMeshProUGUI nameText;
 
-    [Tooltip("Button to proceed to the next line (click to continue)")]
+    [Tooltip("Optional. Nếu không gán, script sẽ tự tạo click button trên DialogueRoot.")]
     public Button continueButton;
 
-    [Tooltip("Icon blinking 'press to continue'")]
     public GameObject continuePrompt;
 
-    [Header("Typewriter Settings")]
-    public float typewriterSpeed = 40f; // characters per second
-    [Header("Canvas Group (optional - used for fade)")]
+    [Header("Typewriter")]
+    public float typewriterSpeed = 40f;
+
+    [Header("Canvas Group")]
     public CanvasGroup canvasGroup;
 
-    // State
-    private Queue<DialogueLine> lineQueue = new Queue<DialogueLine>();
+    [Header("Click Fix")]
+    public bool autoCreateDialogueClickArea = true;
+
+    private readonly Queue<DialogueLine> lineQueue = new Queue<DialogueLine>();
+
+    private Coroutine runQueueCo;
     private Coroutine typewriterCo;
-    private bool isTyping = false;
-    private bool waitingForInput = false;
+
+    private bool isTyping;
+    private bool waitingForInput;
+
+    private string currentFullText = "";
     private System.Action onComplete;
+
+    private Button rootClickButton;
 
     private struct DialogueLine
     {
-        public string speaker;   // "" = narrator
+        public string speaker;
         public string dialogue;
     }
 
@@ -49,80 +56,106 @@ public class MinigameDialogueBridge : MonoBehaviour
     {
         if (instance == null)
             instance = this;
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        // Hide dialogue box initially
-        if (dialogueRoot != null)
-            dialogueRoot.SetActive(false);
+        if (canvasGroup == null && dialogueRoot != null)
+            canvasGroup = dialogueRoot.GetComponent<CanvasGroup>();
 
-        if (continuePrompt != null)
-            continuePrompt.SetActive(false);
+        SetupRootClickButton();
+        HideImmediate();
     }
 
-    void Start()
+    void OnEnable()
     {
-        if (continueButton != null)
-            continueButton.onClick.AddListener(OnContinueClicked);
+        RegisterButtons();
+    }
+
+    void OnDisable()
+    {
+        UnregisterButtons();
+    }
+
+    void Update()
+    {
+        if (dialogueRoot == null || !dialogueRoot.activeSelf)
+            return;
+
+        if (WasContinuePressed())
+            OnContinueClicked();
     }
 
     public void Say(List<string> lines, System.Action onComplete = null)
     {
+        if (lines == null || lines.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        StopCurrentDialogue();
+
         this.onComplete = onComplete;
         lineQueue.Clear();
 
         foreach (string raw in lines)
         {
-            var parsed = ParseLine(raw);
-            lineQueue.Enqueue(parsed);
+            if (string.IsNullOrWhiteSpace(raw))
+                continue;
+
+            lineQueue.Enqueue(ParseLine(raw.Trim()));
         }
 
-        if (dialogueRoot != null)
-            dialogueRoot.SetActive(true);
+        if (lineQueue.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
 
-        StartCoroutine(RunQueue());
+        ShowRoot();
+        runQueueCo = StartCoroutine(RunQueue());
     }
 
-    /// <summary>
-    /// Shortcut: Show a single line from the narrator.
-    /// </summary>
     public void SayNarrator(string text, System.Action onComplete = null)
     {
         Say(new List<string> { $"\"{text}\"" }, onComplete);
     }
 
-    /// <summary>
-    /// Shortcut: Show a single line from a specific character.
-    /// </summary>
     public void SayCharacter(string character, string text, System.Action onComplete = null)
     {
         Say(new List<string> { $"{character} \"{text}\"" }, onComplete);
     }
 
-    /// <summary>
-    /// Read lines from a text file (using Resources.Load).
-    /// Format similar to MinigameTest.txt — only reads dialogue lines (with quotation marks).
-    /// </summary>
     public void SayFromFile(string resourcePath, System.Action onComplete = null)
     {
-        TextAsset file = Resources.Load<TextAsset>(resourcePath);
+        string cleanPath = NormalizeResourcePath(resourcePath);
+
+        TextAsset file = Resources.Load<TextAsset>(cleanPath);
+
         if (file == null)
         {
-            Debug.LogError($"[MinigameDialogueBridge] File not found: {resourcePath}");
+            Debug.LogError($"[MinigameDialogueBridge] File not found in Resources: {cleanPath}");
             onComplete?.Invoke();
             return;
         }
 
-        var lines = new List<string>();
-        foreach (string line in file.text.Split('\n'))
+        List<string> lines = new List<string>();
+
+        foreach (string rawLine in file.text.Split('\n'))
         {
-            string trimmed = line.Trim();
-            // Only take lines with dialogue (with quotation marks " ") — ignore commands, if, choice
-            if (trimmed.Contains('"') && !trimmed.StartsWith("//"))
-                lines.Add(trimmed);
+            string line = rawLine.Trim();
+
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            if (line.StartsWith("//"))
+                continue;
+
+            if (line.Contains("\""))
+                lines.Add(line);
         }
 
         Say(lines, onComplete);
@@ -130,184 +163,335 @@ public class MinigameDialogueBridge : MonoBehaviour
 
     public void Hide(bool immediate = false)
     {
-        StopAllCoroutines();
-        isTyping = false;
-        waitingForInput = false;
-
-        if (immediate || canvasGroup == null)
-        {
-            if (dialogueRoot != null) dialogueRoot.SetActive(false);
-        }
-        else
-        {
-            StartCoroutine(FadeOut());
-        }
+        StopCurrentDialogue();
+        HideImmediate();
     }
 
     private IEnumerator RunQueue()
     {
-        // Wait 1 frame to avoid capturing Start click immediately when DialogueRoot is just activated
         yield return null;
 
         while (lineQueue.Count > 0)
         {
             DialogueLine line = lineQueue.Dequeue();
 
-            bool hasName = !string.IsNullOrEmpty(line.speaker);
-            if (nameRoot != null) nameRoot.SetActive(hasName);
-            if (nameText != null) nameText.text = hasName ? InjectText(line.speaker) : "";
+            bool hasName = !string.IsNullOrWhiteSpace(line.speaker);
 
-            string fullText = InjectText(line.dialogue);
-            yield return StartCoroutine(Typewrite(fullText));
+            if (nameRoot != null)
+                nameRoot.SetActive(hasName);
 
-            if (continuePrompt != null) continuePrompt.SetActive(true);
+            if (nameText != null)
+                nameText.text = hasName ? InjectText(line.speaker) : "";
 
-            // Wait 1 frame before accepting input to avoid click-through
+            currentFullText = InjectText(line.dialogue);
+
+            if (continuePrompt != null)
+                continuePrompt.SetActive(false);
+
+            typewriterCo = StartCoroutine(Typewrite(currentFullText));
+            yield return typewriterCo;
+            typewriterCo = null;
+
+            isTyping = false;
+
+            if (dialogueText != null)
+                dialogueText.maxVisibleCharacters = int.MaxValue;
+
+            if (continuePrompt != null)
+                continuePrompt.SetActive(true);
+
             yield return null;
+
             waitingForInput = true;
+
             while (waitingForInput)
                 yield return null;
 
-            if (continuePrompt != null) continuePrompt.SetActive(false);
+            if (continuePrompt != null)
+                continuePrompt.SetActive(false);
         }
 
-        if (dialogueRoot != null)
-            dialogueRoot.SetActive(false);
+        HideImmediate();
 
-        onComplete?.Invoke();
+        System.Action completeCallback = onComplete;
+        onComplete = null;
+        runQueueCo = null;
+
+        completeCallback?.Invoke();
     }
 
     private IEnumerator Typewrite(string text)
     {
         isTyping = true;
-        dialogueText.text = "";
 
-        float interval = 1f / typewriterSpeed;
-        for (int i = 0; i <= text.Length; i++)
+        if (dialogueText == null)
         {
-            dialogueText.text = text.Substring(0, i);
-            yield return new WaitForSeconds(interval);
-        }
-
-        isTyping = false;
-    }
-
-    private void OnContinueClicked()
-    {
-        if (isTyping)
-        {
-            // Pressed once while typing = skip typewriter
-            if (typewriterCo != null)
-            {
-                StopCoroutine(typewriterCo);
-                typewriterCo = null;
-            }
-            dialogueText.text = GetCurrentFullText();
             isTyping = false;
+            yield break;
         }
-        else if (waitingForInput)
-        {
-            waitingForInput = false;
-        }
-    }
 
-    // Input from keyboard / screen tap
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-        {
-            if (dialogueRoot != null && dialogueRoot.activeSelf)
-                OnContinueClicked();
-        }
-    }
-
-    private string currentFullText = "";
-    private string GetCurrentFullText() => currentFullText;
-
-    private IEnumerator TypewriteInternal(string text)
-    {
-        currentFullText = text;
-        isTyping = true;
-        dialogueText.text = "";
-
-        float interval = 1f / typewriterSpeed;
-
-        // Count through each character but need to skip TMP rich text tags
-        int visibleCount = 0;
-        int totalVisible = GetVisibleLength(text);
-
-        string displayText = text;
+        dialogueText.text = text;
         dialogueText.maxVisibleCharacters = 0;
-        dialogueText.text = displayText;
         dialogueText.ForceMeshUpdate();
+
+        int totalVisible = dialogueText.textInfo.characterCount;
+        int visibleCount = 0;
+
+        float interval = typewriterSpeed <= 0 ? 0f : 1f / typewriterSpeed;
 
         while (visibleCount <= totalVisible)
         {
             dialogueText.maxVisibleCharacters = visibleCount;
             visibleCount++;
-            yield return new WaitForSeconds(interval);
+
+            if (interval > 0f)
+                yield return new WaitForSeconds(interval);
+            else
+                yield return null;
         }
 
         dialogueText.maxVisibleCharacters = int.MaxValue;
         isTyping = false;
     }
 
-    private int GetVisibleLength(string text)
+    private void OnContinueClicked()
     {
-        // Count actual characters (ignore TMP tags <...>)
-        int count = 0;
-        bool inTag = false;
-        foreach (char c in text)
+        if (dialogueRoot == null || !dialogueRoot.activeSelf)
+            return;
+
+        if (isTyping)
         {
-            if (c == '<') inTag = true;
-            else if (c == '>') inTag = false;
-            else if (!inTag) count++;
+            if (typewriterCo != null)
+            {
+                StopCoroutine(typewriterCo);
+                typewriterCo = null;
+            }
+
+            if (dialogueText != null)
+            {
+                dialogueText.text = currentFullText;
+                dialogueText.maxVisibleCharacters = int.MaxValue;
+            }
+
+            isTyping = false;
+            return;
         }
-        return count;
+
+        if (waitingForInput)
+            waitingForInput = false;
+    }
+
+    public void OnPointerContinue()
+    {
+        OnContinueClicked();
+    }
+
+    private void SetupRootClickButton()
+    {
+        if (!autoCreateDialogueClickArea || dialogueRoot == null)
+            return;
+
+        Image image = dialogueRoot.GetComponent<Image>();
+
+        if (image == null)
+            image = dialogueRoot.AddComponent<Image>();
+
+        image.color = new Color(1f, 1f, 1f, 0f);
+        image.raycastTarget = true;
+
+        MinigameDialogueClickCatcher catcher =
+            dialogueRoot.GetComponent<MinigameDialogueClickCatcher>();
+
+        if (catcher == null)
+            catcher = dialogueRoot.AddComponent<MinigameDialogueClickCatcher>();
+
+        catcher.bridge = this;
+    }
+
+    private void RegisterButtons()
+    {
+        if (continueButton != null)
+        {
+            continueButton.onClick.RemoveListener(OnContinueClicked);
+            continueButton.onClick.AddListener(OnContinueClicked);
+        }
+
+        if (rootClickButton != null && rootClickButton != continueButton)
+        {
+            rootClickButton.onClick.RemoveListener(OnContinueClicked);
+            rootClickButton.onClick.AddListener(OnContinueClicked);
+        }
+    }
+
+    private void UnregisterButtons()
+    {
+        if (continueButton != null)
+            continueButton.onClick.RemoveListener(OnContinueClicked);
+
+        if (rootClickButton != null)
+            rootClickButton.onClick.RemoveListener(OnContinueClicked);
+    }
+
+    private void ShowRoot()
+    {
+        if (dialogueRoot != null)
+            dialogueRoot.SetActive(true);
+
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
+
+        if (continuePrompt != null)
+            continuePrompt.SetActive(false);
+    }
+
+    private void HideImmediate()
+    {
+        if (continuePrompt != null)
+            continuePrompt.SetActive(false);
+
+        if (nameRoot != null)
+            nameRoot.SetActive(false);
+
+        if (dialogueText != null)
+        {
+            dialogueText.text = "";
+            dialogueText.maxVisibleCharacters = int.MaxValue;
+        }
+
+        if (nameText != null)
+            nameText.text = "";
+
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+
+        if (dialogueRoot != null)
+            dialogueRoot.SetActive(false);
+
+        isTyping = false;
+        waitingForInput = false;
+        currentFullText = "";
+    }
+
+    private void StopCurrentDialogue()
+    {
+        if (typewriterCo != null)
+        {
+            StopCoroutine(typewriterCo);
+            typewriterCo = null;
+        }
+
+        if (runQueueCo != null)
+        {
+            StopCoroutine(runQueueCo);
+            runQueueCo = null;
+        }
+
+        lineQueue.Clear();
+
+        isTyping = false;
+        waitingForInput = false;
+    }
+
+    private bool WasContinuePressed()
+    {
+#if ENABLE_INPUT_SYSTEM
+        bool spacePressed =
+            Keyboard.current != null &&
+            Keyboard.current.spaceKey.wasPressedThisFrame;
+
+        bool enterPressed =
+            Keyboard.current != null &&
+            (Keyboard.current.enterKey.wasPressedThisFrame ||
+             Keyboard.current.numpadEnterKey.wasPressedThisFrame);
+
+        if (spacePressed || enterPressed)
+            return true;
+#endif
+
+#if ENABLE_LEGACY_INPUT_MANAGER
+        if (Input.GetKeyDown(KeyCode.Space) ||
+            Input.GetKeyDown(KeyCode.Return))
+            return true;
+#endif
+
+        return false;
     }
 
     private DialogueLine ParseLine(string raw)
     {
-        // Find the first quotation mark
         int start = raw.IndexOf('"');
-        if (start == -1) return new DialogueLine { speaker = "", dialogue = raw };
+
+        if (start < 0)
+        {
+            return new DialogueLine
+            {
+                speaker = "",
+                dialogue = raw
+            };
+        }
 
         int end = raw.LastIndexOf('"');
-        string speaker = raw.Substring(0, start).Trim();
-        string dialogue = (start < end) ? raw.Substring(start + 1, end - start - 1) : raw.Substring(start + 1);
 
-        return new DialogueLine { speaker = speaker, dialogue = dialogue };
+        string speaker = raw.Substring(0, start).Trim();
+
+        string dialogue = start < end
+            ? raw.Substring(start + 1, end - start - 1)
+            : raw.Substring(start + 1);
+
+        if (speaker.Equals("narrator", System.StringComparison.OrdinalIgnoreCase))
+            speaker = "";
+
+        return new DialogueLine
+        {
+            speaker = speaker,
+            dialogue = dialogue
+        };
     }
 
-    /// <summary>
-    /// Inject VariableStore variables and Tags into text.
-    /// Use TagManager.Inject if available — fallback manually if not.
-    /// </summary>
     private string InjectText(string text)
     {
-        if (string.IsNullOrEmpty(text)) return text;
+        if (string.IsNullOrEmpty(text))
+            return text;
 
-        // Use TagManager (already in the project)
-        try { text = TagManager.Inject(text); }
-        catch { /* TagManager not available in this scene */ }
+        try
+        {
+            text = TagManager.Inject(text);
+        }
+        catch
+        {
+        }
 
         return text;
     }
 
-    private IEnumerator FadeOut()
+    private string NormalizeResourcePath(string path)
     {
-        float t = 0.25f;
-        float elapsed = 0;
-        float start = canvasGroup.alpha;
+        if (string.IsNullOrWhiteSpace(path))
+            return "";
 
-        while (elapsed < t)
-        {
-            elapsed += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(start, 0, elapsed / t);
-            yield return null;
-        }
+        path = path.Trim();
+        path = path.Replace("\\", "/");
 
-        dialogueRoot.SetActive(false);
-        canvasGroup.alpha = 1;
+        const string resourcesMarker = "/Resources/";
+        int index = path.IndexOf(resourcesMarker, System.StringComparison.OrdinalIgnoreCase);
+
+        if (index >= 0)
+            path = path.Substring(index + resourcesMarker.Length);
+
+        if (path.StartsWith("Resources/", System.StringComparison.OrdinalIgnoreCase))
+            path = path.Substring("Resources/".Length);
+
+        if (path.EndsWith(".txt", System.StringComparison.OrdinalIgnoreCase))
+            path = path.Substring(0, path.Length - ".txt".Length);
+
+        return path;
     }
 }

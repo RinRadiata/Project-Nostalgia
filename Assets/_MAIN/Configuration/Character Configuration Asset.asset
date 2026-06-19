@@ -129,7 +129,7 @@ MonoBehaviour:
     dialogueColor: {r: 0.93207544, g: 0.80151296, b: 0.3429333, a: 1}
     nameFont: {fileID: 11400000, guid: af29e82c2e47e344585e5130011db2ca, type: 2}
     dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
-    nameFontScale: 1
+    nameFontScale: 2
     dialogueFontScale: 1
     sprites:
       _serializedList: []

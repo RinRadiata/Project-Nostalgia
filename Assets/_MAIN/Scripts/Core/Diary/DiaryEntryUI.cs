@@ -13,28 +13,45 @@ public class DiaryEntryUI : MonoBehaviour
 
     public void Setup(DiaryEntryData data, bool unlocked, int currentAffection, string date)
     {
-        titleText.text = data.title;
-        dateText.text = date;
+        if (data == null)
+            return;
+
+        if (titleText != null)
+            titleText.text = data.title;
+
+        if (dateText != null)
+            dateText.text = date;
 
         if (unlocked)
         {
-            contentText.text = data.content;
+            if (contentText != null)
+                contentText.text = data.content;
 
-            lockOverlay.SetActive(false);
-            darkMask.SetActive(false);
-            lockText.gameObject.SetActive(false);
+            if (lockOverlay != null)
+                lockOverlay.SetActive(false);
+
+            if (darkMask != null)
+                darkMask.SetActive(false);
+
+            if (lockText != null)
+                lockText.gameObject.SetActive(false);
         }
         else
         {
-            contentText.text = "";
+            if (contentText != null)
+                contentText.text = "";
 
-            lockOverlay.SetActive(true);
-            darkMask.SetActive(true);
+            if (lockOverlay != null)
+                lockOverlay.SetActive(true);
 
-            lockText.gameObject.SetActive(true);
-            lockText.text =
-                "Unlock at " + data.requiredAffection +
-                "\n(Current: " + currentAffection + ")";
+            if (darkMask != null)
+                darkMask.SetActive(true);
+
+            if (lockText != null)
+            {
+                lockText.gameObject.SetActive(true);
+                lockText.text = data.GetLockMessage(currentAffection);
+            }
         }
     }
 }

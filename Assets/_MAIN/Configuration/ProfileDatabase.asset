@@ -30,12 +30,18 @@ MonoBehaviour:
     - title: First met
       content: Fading by choice, so that new life may bloom.
       requiredAffection: 10
+      unlockByMinigame: 0
+      minigameID: 
     - title: Forget me not
       content: idk
       requiredAffection: 30
+      unlockByMinigame: 0
+      minigameID: 
     - title: Forgotten page
       content: idk
       requiredAffection: 60
+      unlockByMinigame: 0
+      minigameID: 
     maxAffection: 100
   - characterID: el
     characterName: EL
@@ -48,6 +54,8 @@ MonoBehaviour:
     - title: First met!
       content: this is the day when i was met you
       requiredAffection: 10
+      unlockByMinigame: 0
+      minigameID: 
     maxAffection: 100
   - characterID: rose
     characterName: Rose
@@ -58,12 +66,17 @@ MonoBehaviour:
     unlockedIcon: {fileID: 21300000, guid: 81587b9d99fa0624aaac7facb834976d, type: 3}
     diaryEntries: []
     maxAffection: 100
-  - characterID: parus
-    characterName: Parus
-    age: 36
-    description: Please gimme summer swimsuit skin
-    portrait: {fileID: 21300000, guid: c570ca2a20e0de848aadc6402cedf166, type: 3}
+  - characterID: neri
+    characterName: Neri
+    age: 18
+    description: add more later
+    portrait: {fileID: 21300000, guid: 45e880795980ea94599ca6bdc0496a35, type: 3}
     lockedIcon: {fileID: 21300000, guid: c29b76dbc2a487640971080639b6de42, type: 3}
-    unlockedIcon: {fileID: 21300000, guid: da4496c502d81194e9990d556072e719, type: 3}
-    diaryEntries: []
+    unlockedIcon: {fileID: 21300000, guid: 45e880795980ea94599ca6bdc0496a35, type: 3}
+    diaryEntries:
+    - title: Harmony
+      content: Unamed melody...
+      requiredAffection: 0
+      unlockByMinigame: 1
+      minigameID: memory1
     maxAffection: 100

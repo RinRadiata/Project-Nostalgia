@@ -1,11 +1,1 @@
-
-
-input "What's your name?"
-
-$name = "The amazing <input>"
-
-narrator "So you are $name!"
-
-$name += ", the greatest artist!"
-
-narrator "Huh?, $name!?"
+playminigame memory1 -char Neri -scene Minigame_Memory1

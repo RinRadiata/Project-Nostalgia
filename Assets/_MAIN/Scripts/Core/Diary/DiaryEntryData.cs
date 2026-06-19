@@ -1,16 +1,3 @@
-//using UnityEngine;
-
-//[System.Serializable]
-//public class DiaryEntryData
-//{
-//    public string title;
-
-//    [TextArea(3, 10)]
-//    public string content;
-
-//    [Header("Unlock Condition")]
-//    public int requiredAffection;
-//}
 using UnityEngine;
 
 [System.Serializable]
@@ -18,50 +5,52 @@ public class DiaryEntryData
 {
     public string title;
 
-    [TextArea(3, 10)]
+    [TextArea(3, 8)]
     public string content;
 
-    [Header("Unlock Condition")]
-    public int requiredAffection;
+    [Header("Affection Unlock")]
+    public int requiredAffection = 0;
 
     [Header("Minigame Unlock")]
-    [Tooltip("if filled, this entry will only unlock when the corresponding minigame is completed. " +
-             "Leave empty if only affection is required.")]
-    public string requiredMinigameID;  // e.g., "memory1" — matches Minigame.currentID
+    public bool unlockByMinigame = false;
 
-    /// <summary>
-    /// Checks if this entry is unlocked based on both affection and minigame completion.
-    /// </summary>
+    [Tooltip("MUST match minigameID on 'playminigame' command. Ex: memory1")]
+    public string minigameID = "";
+
     public bool IsUnlocked(string characterID, int currentAffection)
     {
-        // Affection condition
-        bool affectionMet = currentAffection >= requiredAffection;
-
-        // Minigame condition (if has any)
-        bool minigameMet = true;
-        if (!string.IsNullOrEmpty(requiredMinigameID))
+        if (unlockByMinigame)
         {
-            string key = $"{characterID}.diary.{requiredMinigameID}.unlocked";
-            if (VariableStore.TryGetValue(key, out object val))
-                minigameMet = val is bool b && b;
-            else
-                minigameMet = false;
+            if (string.IsNullOrWhiteSpace(minigameID))
+            {
+                Debug.LogWarning($"[DiaryEntryData] Entry '{title}' is set to unlock by minigame but minigameID is empty.");
+                return false;
+            }
+
+            return DiaryProgress.IsDiaryEntryUnlocked(characterID, minigameID);
         }
 
-        return affectionMet && minigameMet;
+        return currentAffection >= requiredAffection;
     }
 
-    /// <summary>
-    /// Gets the unlock date from VariableStore (if has any).
-    /// </summary>
     public string GetUnlockDate(string characterID)
     {
-        if (string.IsNullOrEmpty(requiredMinigameID)) return "";
+        if (!unlockByMinigame || string.IsNullOrWhiteSpace(minigameID))
+            return "";
 
-        string key = $"{characterID}.diary.{requiredMinigameID}.unlockDate";
-        if (VariableStore.TryGetValue(key, out object val))
-            return val?.ToString() ?? "";
+        return DiaryProgress.GetDiaryUnlockDate(characterID, minigameID);
+    }
 
-        return "";
+    public string GetLockMessage(int currentAffection)
+    {
+        if (unlockByMinigame)
+        {
+            if (string.IsNullOrWhiteSpace(minigameID))
+                return "Complete the required memory.";
+
+            return $"Complete memory: {minigameID}";
+        }
+
+        return "Unlock at " + requiredAffection + "\n(Current: " + currentAffection + ")";
     }
 }
