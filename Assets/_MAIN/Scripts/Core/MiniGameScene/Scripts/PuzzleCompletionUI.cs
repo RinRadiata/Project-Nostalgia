@@ -4,13 +4,6 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
-/// <summary>
-/// Gắn vào CompletionPanel.
-/// PuzzleController.ShowCompletion() sẽ:
-///   1. Gọi MinigameSceneManager.FinishMinigame() — lưu variables
-///   2. completionPanel.SetActive(true)
-///   3. completionUI.Show() — đọc variables vừa lưu → hiển thị đúng
-/// </summary>
 public class PuzzleCompletionUI : MonoBehaviour
 {
     [Header("Result Text")]

@@ -1733,8 +1733,8 @@ MonoBehaviour:
   canvasGroup: {fileID: 572555184}
   outroLinesPerfect: []
   outroLinesNormal: []
-  outroResourcePathPerfect: Dialogue Files/Test_MinigameScene_OutroPerfect
-  outroResourcePathNormal: Dialogue Files/Test_MinigameScene_OutroNormal
+  outroResourcePathPerfect: Dialogue Files/MinigameScene_OutroPerfect
+  outroResourcePathNormal: Dialogue Files/MinigameScene_OutroNormal
 --- !u!225 &572555184
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5228,7 +5228,7 @@ MonoBehaviour:
   puzzleController: {fileID: 891857892}
   playIntroDialogue: 1
   introLines: []
-  introResourcePath: Dialogue Files/Test_MinigameScene_Intro
+  introResourcePath: Dialogue Files/MinigameScene_Intro
 --- !u!225 &1740401207
 CanvasGroup:
   m_ObjectHideFlags: 0
