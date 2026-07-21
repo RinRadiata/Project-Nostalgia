@@ -5,6 +5,27 @@ It uses a custom dialogue interpreter to read plain-text chapter scripts and
 translate them into dialogue, character actions, audio, visual effects, player
 choices, and scene commands.
 
+## Gameplay Preview
+
+| Dialogue System | Branching Choice and Diary |
+|:---:|:---:|
+| ![In-game dialogue system](readme-assets/Ingame_dialogue.gif) | ![Branching choice and diary unlock](readme-assets/Choice_DiaryUnlock.gif) |
+| Script-driven dialogue, character presentation, and typewriter text | Player choices connected to affection and diary progression |
+
+### Live2D Integration
+
+<p align="center">
+  <img
+    src="readme-assets/Live2D_param.gif"
+    alt="Live2D character parameter and expression control"
+    width="426"
+  >
+</p>
+
+<p align="center">
+  Live2D character parameters, expressions, and motions controlled in Unity.
+</p>
+
 ## Presentation Layers
 
 The visual novel interface is organized into six presentation layers:
@@ -38,13 +59,6 @@ independently through commands defined in chapter scripts.
 - Minigame scene transitions
 - Story variables and affection tracking
 
-## Live2D Integration
-
-The framework supports Live2D Cubism characters alongside regular sprite-based
-characters. Live2D characters can play motions, change expressions, transition
-colors, and respond to the same script-driven character commands used by the
-dialogue system.
-
 ## Current Development
 
 The project is currently in development. The present focus is on expanding the
@@ -57,3 +71,10 @@ events, and improving minigame transitions.
 - C#
 - TextMeshPro
 - Live2D Cubism SDK
+
+## Acknowledgements
+
+- Live2D Cubism SDK
+- TextMeshPro
+- Serialized Collections
+- Any tutorials, code samples, external packages, or assets used during development
