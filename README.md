@@ -9,21 +9,21 @@ choices, and scene commands.
 
 | Dialogue System | Branching Choice and Diary |
 |:---:|:---:|
-| ![In-game dialogue system](readme-assets/Ingame_dialogue.gif) | ![Branching choice and diary unlock](readme-assets/Choice_DiaryUnlock.gif) |
+| ![In-game dialogue system](https://raw.githubusercontent.com/RinRadiata/Project-Nostalgia/main/readme-assets/Ingame_dialogue.gif) | ![Branching choice and diary unlock](https://raw.githubusercontent.com/RinRadiata/Project-Nostalgia/main/readme-assets/Choice_DiaryUnlock.gif) |
 | Script-driven dialogue, character presentation, and typewriter text | Player choices connected to affection and diary progression |
 
 ### Live2D Integration
 
 <p align="center">
   <img
-    src="readme-assets/Live2D_param.gif"
+    src="https://raw.githubusercontent.com/RinRadiata/Project-Nostalgia/main/readme-assets/Live2D_param.gif"
     alt="Live2D character parameter and expression control"
     width="426"
   >
 </p>
 
 <p align="center">
-  Live2D character parameters, expressions, and motions controlled in Unity.
+  Live2D character parameters, expressions, and motions.
 </p>
 
 ## Presentation Layers
