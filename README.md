@@ -9,4 +9,4 @@ dialogue interpretation system for chapter files(.txt), input, choice screen, te
 
 *(current progress is focus on diary UI & minigame event based on Affection system).
 
-*This project also works with Live 2D character as well (if i have time to make characters model).
+*This project also works with Live 2D character.
