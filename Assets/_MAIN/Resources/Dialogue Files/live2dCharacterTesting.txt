@@ -1,4 +1,4 @@
-setLayerMedia(background spider_lily)
+setLayerMedia(background FloweringWaves)
 
 CreateCharacter(Neri -e true -i true)
 

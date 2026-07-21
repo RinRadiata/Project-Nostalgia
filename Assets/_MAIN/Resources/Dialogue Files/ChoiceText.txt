@@ -32,5 +32,3 @@ Nerine as ??? "...{wa 1}Thank you for your time...{wa 1}I hope we can meet again
 SetLayerMedia(background FloweringWaves)
 
 Nerine "May the Sea of Flowers guid your way!"
-
-
