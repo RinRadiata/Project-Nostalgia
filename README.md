@@ -78,7 +78,3 @@ events, and improving minigame transitions.
 - TextMeshPro
 - Serialized Collections
 - Any tutorials, code samples, external packages, or assets used during development
-
-## Owner
-
-Tran Quoc Tuan - 2311557577
