@@ -81,4 +81,4 @@ events, and improving minigame transitions.
 
 ## Owner
 
-| Tran Quoc Tuan | 2311557577 |
+Tran Quoc Tuan - 2311557577
