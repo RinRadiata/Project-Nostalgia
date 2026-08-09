@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 752a05b90a34a0743b29c1491166442c, type: 3}
-  m_Name: ProfileDatabase
+  m_Name: Character Profile Database Configuration
   m_EditorClassIdentifier: Assembly-CSharp::ProfileDatabase
   characters:
   - characterID: nerine
@@ -47,7 +47,7 @@ MonoBehaviour:
     characterName: EL
     age: 19
     description: maybe i have something to write it down....
-    portrait: {fileID: 21300000, guid: 9a538b5dd449d83489c1e6dfd29954ef, type: 3}
+    portrait: {fileID: 21300000, guid: 8bc82d8846694cd4c889b9b0628dccd0, type: 3}
     lockedIcon: {fileID: 21300000, guid: c29b76dbc2a487640971080639b6de42, type: 3}
     unlockedIcon: {fileID: 21300000, guid: 4f8f4c8e39f93c24fad4ed3ba4edb70d, type: 3}
     diaryEntries:
@@ -70,7 +70,7 @@ MonoBehaviour:
     characterName: Neri
     age: 18
     description: add more later
-    portrait: {fileID: 21300000, guid: 45e880795980ea94599ca6bdc0496a35, type: 3}
+    portrait: {fileID: 21300000, guid: 0f45cb08f9e3f4a49a38a5c966b36430, type: 3}
     lockedIcon: {fileID: 21300000, guid: c29b76dbc2a487640971080639b6de42, type: 3}
     unlockedIcon: {fileID: 21300000, guid: 45e880795980ea94599ca6bdc0496a35, type: 3}
     diaryEntries:

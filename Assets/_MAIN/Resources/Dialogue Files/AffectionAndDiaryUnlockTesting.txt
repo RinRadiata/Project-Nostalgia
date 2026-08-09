@@ -1,47 +1,70 @@
 
 SetLayerMedia(background "Fantasy City" -aud true -i true)
 
-CreateCharacter(Parus -e true -i true)
-parus.SetPosition(0.5)
+CreateCharacter(Neri -e true -i true)
+CreateCharacter(EL -e true -i true)
 
-$parus.affection = 0
-$parus.diaryUnlocked = false
+Neri.SetPosition(0.2)
+EL.SetPosition(0.8)
 
-PlayVoice(Parus_select -v 1 -p 1)
+$neri.affection = 0
+$neri.diaryUnlocked = false
 
-Parus "Choose this!"
+$el.affection = 0
+$el.diaryUnlocked = false
+
+$nerine.diaryUnlocked = false
+
+[wait]Neri.Animate(IdleTalk)
+Neri "good morning my dear~ how have you been?"
+Neri.Animate(Idle)
+
+EL "It's afternoon, Neri!"
 
 ClearLayerMedia(background -b feathers -spd 0.5)
 
 SetLayerMedia(cinematic -m "~/Graphics/gallery/05_a_look_to_the_garden")
 
-Parus "Leche please gimme summer swimsuit skin as soon as possible~"
-
-parus.Show()
+Neri "please gimme summer swimsuit outfit as soon as possible~"
+Neri.Show()
 
 narrator "Scent's can't wait to see it too!"
 
 wait(1)
 
-[wait]PlayVoice(Parus_thisOne -v 1 -p 1)
-
-Choice "Will you accepted to draw Parus Swimsuit skin?"
+Choice "Will you accepted to draw Neri Swimsuit skin?"
 	{
 		-YESSSSSSSSSSSSSSS !!!
-		$parus.affection += 10
+		$neri.affection += 30
 		-DEFINITELY !!!
-		$parus.affection += 10
+		$neri.affection += 10
 		-ABSOLUTELY !!!
-		$parus.affection += 10
+		$neri.affection += 10
 		-OF COURSE I WILL !!!
-		$parus.affection += 10
+		$neri.affection += 50
 	}
 
-[wait]PlayVoice(Parus_happy -v 1 -p 1)
-
-if ($parus.affection >= 10)
+if ($neri.affection >= 10)
 {
-	Narrator "your affection with Parunan has increased!, thankyou Leche!"
-	$parus.diaryUnlocked = true 
+	Narrator "your affection with Neri has increased!"
+	$neri.diaryUnlocked = true 
+}
+
+Choice "Will you accepted to draw EL Swimsuit skin?"
+	{
+		-YESSSSSSSSSSSSSSS !!!
+		$el.affection += 30
+		-DEFINITELY !!!
+		$el.affection += 10
+		-ABSOLUTELY !!!
+		$el.affection += 10
+		-OF COURSE I WILL !!!
+		$el.affection += 50
+	}
+
+if ($el.affection >= 10)
+{
+	Narrator "your affection with EL has increased!"
+	$el.diaryUnlocked = true 
 }
 
