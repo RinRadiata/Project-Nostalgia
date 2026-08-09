@@ -1,6 +1,6 @@
 # Project Nostalgia
 
-Project Nostalgia is a 2D visual novel framework built with Unity and C#.  
+Project Nostalgia (EDEN: A Flowering Waves of Nostalia) is a 2D visual novel framework built with Unity and C#.  
 It uses a custom dialogue interpreter to read plain-text chapter scripts and
 translate them into dialogue, character actions, audio, visual effects, player
 choices, and scene commands.
