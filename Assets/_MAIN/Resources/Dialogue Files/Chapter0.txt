@@ -91,26 +91,29 @@ SetlayerMedia(background White_lycoris_field)
 ShowGalleryImage(03_white_lycoris_field)
 HideGalleryImage(03_white_lycoris_field -spd 1)
 
-CreateCharacter(El -e true -i false), EL.SetPosition(-0.025)
+CreateCharacter(Elena -e true -i false), Elena.SetPosition(0.1)
 
-EL.Show()
+Elena.Show()
+Elena.Animate(Idle)
 
 Nerine.Show(), Nerine.SetPosition(0.7)
 
-EL.Highlight()
+Elena.Highlight()
 Nerine.Unhighlight()
-EL "Rin! Look what I found!"
-EL.Unhighlight()
+Elena "Rin! Look what I found!"
+Elena.Unhighlight()
 
 wait(0.5)
 Nerine.SetSprite(Nerine_Surprise)
 
 Nerine.Highlight()
-Nerine "Don’t run so fast, El!"
+Nerine "Don’t run so fast, Ela!"
 Nerine.Unhighlight()
 
-El.Hide(), Nerine.Hide()
+Elena.Hide(), Nerine.Hide()
+
 wait(0.5)
+
 Narrator "The memory fades, replaced by short flashback..."
 
 SetlayerMedia(background The_gate_and_red_lycoris_garden)
@@ -125,6 +128,7 @@ Rose.Show(), Rose.SetPosition(0.8)
 
 Rose.Highlight()
 Nerine.Unhighlight()
+
 Rose "As your symbol awakens, so too will your memories. Follow them… and they will lead you to the truth."
 
 wait(1)
