@@ -80,3 +80,18 @@ MonoBehaviour:
       unlockByMinigame: 1
       minigameID: memory1
     maxAffection: 100
+  - characterID: ela
+    characterName: Elena
+    age: 18
+    description: add more later
+    portrait: {fileID: 21300000, guid: 8bc82d8846694cd4c889b9b0628dccd0, type: 3}
+    lockedIcon: {fileID: 21300000, guid: c29b76dbc2a487640971080639b6de42, type: 3}
+    unlockedIcon: {fileID: 21300000, guid: 4f8f4c8e39f93c24fad4ed3ba4edb70d, type: 3}
+    diaryEntries:
+    - title: A story untold
+      content: You remember a new branch of a memory fragments between a faded promise
+        and the story behind...
+      requiredAffection: 70
+      unlockByMinigame: 1
+      minigameID: memory1
+    maxAffection: 100

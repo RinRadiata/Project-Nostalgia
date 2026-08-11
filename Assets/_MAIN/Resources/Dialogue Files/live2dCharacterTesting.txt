@@ -1,12 +1,14 @@
 setLayerMedia(background FloweringWaves)
 
+CreateCharacter(Elena -e true -i true)
 CreateCharacter(Neri -e true -i true)
 
+Elena.SetPosition(0.7)
 Neri.SetPosition(0.2)
-
-[wait]Neri.Animate(IdleTalk)
-Neri "Hi! How are you doing?"
 
 Neri.Animate(Idle)
 
-Neri "this testing bothering me ya know??!"
+[wait]Elena.Animate(IdleTalkMove)
+Elena "This is was not what i ment! idk if it was his fault or not...{c}Like if i was waiting for you for so long..."
+
+Elena.Animate(Idle)
